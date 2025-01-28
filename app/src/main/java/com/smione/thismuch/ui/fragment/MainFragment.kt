@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.smione.thismuch.databinding.FragmentMainBinding
 
-class MainFragment: Fragment() {
+class MainFragment(): Fragment() {
 
     private lateinit var context: Context
     private lateinit var binding: FragmentMainBinding
