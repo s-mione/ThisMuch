@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ThisMuch</string>
+    <string name="textview_placeholder_main">UNLOCK TIME</string>
 </resources>
