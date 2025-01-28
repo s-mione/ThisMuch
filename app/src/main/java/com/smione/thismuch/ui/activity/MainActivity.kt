@@ -1,4 +1,4 @@
-package com.smione.thismuch
+package com.smione.thismuch.ui.activity
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
