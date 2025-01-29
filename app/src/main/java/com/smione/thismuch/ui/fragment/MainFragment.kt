@@ -7,12 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.smione.thismuch.databinding.FragmentMainBinding
-import com.smione.thismuch.receiver.ScreenLockUnlockBroadcastReceiver
-import com.smione.thismuch.receivercontract.ScreenLockUnlockBroadcastReceiverContract
+import com.smione.thismuch.receiver.ScreenUnlockBroadcastReceiver
+import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
 
-class MainFragment(): Fragment(), ScreenLockUnlockBroadcastReceiverContract {
+class MainFragment(): Fragment(), ScreenUnlockBroadcastReceiverContract {
 
-    lateinit var screenLockUnlockBroadcastReceiver: ScreenLockUnlockBroadcastReceiver
+    lateinit var screenUnlockBroadcastReceiver: ScreenUnlockBroadcastReceiver
 
     private lateinit var context: Context
     private lateinit var binding: FragmentMainBinding
@@ -39,11 +39,11 @@ class MainFragment(): Fragment(), ScreenLockUnlockBroadcastReceiverContract {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        screenLockUnlockBroadcastReceiver = ScreenLockUnlockBroadcastReceiver(this)
-        screenLockUnlockBroadcastReceiver.register(this.context)
+        screenUnlockBroadcastReceiver = ScreenUnlockBroadcastReceiver(this)
+        screenUnlockBroadcastReceiver.register(this.context)
     }
 
-    override fun onScreenLockUnlock() {
+    override fun onScreenUnlock() {
         binding.tvMain.text = "Screen Unlock"
     }
 }

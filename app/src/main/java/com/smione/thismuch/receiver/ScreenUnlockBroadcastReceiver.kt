@@ -6,12 +6,12 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
-import com.smione.thismuch.receivercontract.ScreenLockUnlockBroadcastReceiverContract
+import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
 
-class ScreenLockUnlockBroadcastReceiver(private val screenLockUnlockBroadcastReceiverContract: ScreenLockUnlockBroadcastReceiverContract): BroadcastReceiver() {
+class ScreenUnlockBroadcastReceiver(private val screenUnlockBroadcastReceiverContract: ScreenUnlockBroadcastReceiverContract): BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-        this.screenLockUnlockBroadcastReceiverContract.onScreenLockUnlock()
+        this.screenUnlockBroadcastReceiverContract.onScreenUnlock()
     }
 
     fun register(context: Context) {
