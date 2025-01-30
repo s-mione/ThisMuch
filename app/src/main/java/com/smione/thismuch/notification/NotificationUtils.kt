@@ -14,17 +14,21 @@ import androidx.fragment.app.Fragment
 open class NotificationUtils {
 
     companion object {
-        val DEFAULT_CHANNEL_ID = "1"
 
-        fun sendNotification(context: Context, fragment: Fragment, notification: NotificationCompat.Builder) {
+        const val DEFAULT_CHANNEL_ID = "1"
+        const val IMPORTANCE_DEFAULT = NotificationManager.IMPORTANCE_DEFAULT
+
+        fun sendNotification(context: Context, fragment: Fragment, notificationId: Int,
+                             notification: NotificationCompat.Builder) {
             with(NotificationManagerCompat.from(context)) {
                 checkForPermission(context, fragment)
-                notify(1, notification.build())
+                notify(notificationId, notification.build())
             }
         }
 
         fun createNotification(context: Context, channelId: String, iconId: Int, title: String,
-                               text: String, priority: Int, onGoing: Boolean = false): NotificationCompat.Builder {
+                               text: String, priority: Int,
+                               onGoing: Boolean = false): NotificationCompat.Builder {
             return NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(iconId)
                 .setContentTitle(title)
@@ -48,12 +52,12 @@ open class NotificationUtils {
                 if (ActivityCompat.checkSelfPermission(
                         context,
                         Manifest.permission.POST_NOTIFICATIONS
-                    ) != PackageManager.PERMISSION_GRANTED
+                    )
+                    != PackageManager.PERMISSION_GRANTED
                 ) {
                     ActivityCompat.requestPermissions(
                         fragment.requireActivity(),
-                        arrayOf(Manifest.permission.POST_NOTIFICATIONS),
-                        1
+                        arrayOf(Manifest.permission.POST_NOTIFICATIONS), 1
                     )
                     return
                 }
