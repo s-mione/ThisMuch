@@ -1,5 +1,6 @@
 package com.smione.thismuch.notification
 
+import android.app.Notification
 import android.content.Context
 import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
@@ -11,13 +12,16 @@ class TimeNotificationUtils : NotificationUtils() {
         private const val TIME_NOTIFICATION_ID = 1
         fun sendNotificationForTime(context: Context, fragment: Fragment, hours: Int,
                                     minutes: Int) {
-            val notification = createNotification(
-                context, DEFAULT_CHANNEL_ID,
-                getIconResource(hours, minutes), "Display on at:",
-                "It's ${getFormattedTime(hours, minutes)}",
+            val notification = this.createNotificationForTime(context, hours, minutes)
+            sendNotification(context, fragment, TIME_NOTIFICATION_ID, notification)
+        }
+
+        fun createNotificationForTime(context: Context, hours: Int, minutes: Int): Notification {
+            return createNotification(
+                context, DEFAULT_CHANNEL_ID, getIconResource(hours, minutes),
+                "Display on at:", "It's ${getFormattedTime(hours, minutes)}",
                 NotificationCompat.PRIORITY_DEFAULT, true
             )
-            sendNotification(context, fragment, TIME_NOTIFICATION_ID, notification)
         }
 
         private fun getIconResource(hours: Int, minutes: Int): Int {
