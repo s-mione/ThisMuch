@@ -1,6 +1,7 @@
 package com.smione.thismuch.notification
 
 import android.Manifest
+import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -19,22 +20,23 @@ open class NotificationUtils {
         const val IMPORTANCE_DEFAULT = NotificationManager.IMPORTANCE_DEFAULT
 
         fun sendNotification(context: Context, fragment: Fragment, notificationId: Int,
-                             notification: NotificationCompat.Builder) {
+                             notification: Notification) {
             with(NotificationManagerCompat.from(context)) {
                 checkForPermission(context, fragment)
-                notify(notificationId, notification.build())
+                notify(notificationId, notification)
             }
         }
 
         fun createNotification(context: Context, channelId: String, iconId: Int, title: String,
                                text: String, priority: Int,
-                               onGoing: Boolean = false): NotificationCompat.Builder {
+                               onGoing: Boolean = false): Notification {
             return NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(iconId)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setPriority(priority)
                 .setOngoing(onGoing)
+                .build()
         }
 
         fun createNotificationChannel(context: Context, channelId: String, channelName: String,
