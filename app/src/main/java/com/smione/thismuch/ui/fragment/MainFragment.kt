@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.smione.thismuch.databinding.FragmentMainBinding
+import com.smione.thismuch.ui.dialog.AskToIgnoreBatteryOptimizationDialog
 
 class MainFragment() : Fragment() {
 
@@ -39,5 +40,6 @@ class MainFragment() : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.v("MainFragment", "onViewCreated")
         super.onViewCreated(view, savedInstanceState)
+        AskToIgnoreBatteryOptimizationDialog(requireContext()).show()
     }
 }
