@@ -2,12 +2,12 @@ package com.smione.thismuch.ui.activity
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.FragmentActivity
+import androidx.appcompat.app.AppCompatActivity
 import com.smione.thismuch.R
 import com.smione.thismuch.ui.activitycontract.MainActivityContract
 import com.smione.thismuch.ui.fragment.MainFragment
 
-class MainActivity : FragmentActivity(), MainActivityContract {
+class MainActivity : AppCompatActivity(), MainActivityContract {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.v("MainActivity", "onCreate")
