@@ -17,6 +17,8 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
 
     companion object {
         private const val NOTIFICATION_ID: Int = 1
+
+        var isRunning: Boolean = false
     }
 
     private lateinit var notification: Notification
@@ -38,6 +40,7 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
         super.onDestroy()
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
+        isRunning = false
     }
 
     override fun onBind(p0: Intent?): IBinder? {
@@ -52,10 +55,11 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
         notificationManager.notify(NOTIFICATION_ID, notification)
     }
 
-    private fun startForegroundService() {
+    fun startForegroundService() {
         Log.v("TimeNotificationService", "startForegroundService")
         notification = buildNotification()
         startForeground(NOTIFICATION_ID, notification)
+        isRunning = true
     }
 
     private fun buildNotification(): Notification {
