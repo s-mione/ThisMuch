@@ -9,7 +9,7 @@ import com.smione.thismuch.databinding.FragmentAccessListBinding
 import com.smione.thismuch.repositorycontract.AccessRepositoryContract
 import com.smione.thismuch.ui.fragment.recyclerview.AccessListRecyclerViewAdapter
 
-class AccessListFragment(val accessRepository: AccessRepositoryContract) : Fragment() {
+class AccessListFragment(private val accessRepository: AccessRepositoryContract) : Fragment() {
 
     private lateinit var binding: FragmentAccessListBinding
 
@@ -27,7 +27,8 @@ class AccessListFragment(val accessRepository: AccessRepositoryContract) : Fragm
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val headers = accessRepository.getHeaders()
         val accessList = accessRepository.getAccessList()
-        binding.rvList.adapter = AccessListRecyclerViewAdapter(accessList)
+        binding.rvList.adapter = AccessListRecyclerViewAdapter(headers, accessList)
     }
 }
