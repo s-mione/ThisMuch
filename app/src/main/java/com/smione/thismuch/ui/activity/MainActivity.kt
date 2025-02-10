@@ -16,7 +16,6 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         replaceFragmentToMainFragment()
-        replaceFragmentToAccessListFragment()
     }
 
     override fun replaceFragmentToAccessListFragment() {
