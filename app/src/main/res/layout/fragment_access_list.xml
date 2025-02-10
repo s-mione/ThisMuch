@@ -11,4 +11,5 @@
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.fragment.AccessListFragment"
-    tools:listitem="@layout/fragment_access_item" />
+    tools:listitem="@layout/fragment_access_item"
+    android:scrollbars="vertical" />
