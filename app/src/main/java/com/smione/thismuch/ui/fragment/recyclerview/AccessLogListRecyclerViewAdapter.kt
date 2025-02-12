@@ -5,9 +5,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.smione.thismuch.databinding.FragmentAccessItemBinding
 
-class AccessListRecyclerViewAdapter(
+class AccessLogListRecyclerViewAdapter(
     private val headers: List<String>,
-    private val values: List<AccessListElement>)
+    private val values: List<AccessLogListElement>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
@@ -61,7 +61,7 @@ class AccessListRecyclerViewAdapter(
 
     inner class ItemViewHolder(private val binding: FragmentAccessItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: AccessListElement) {
+        fun bind(item: AccessLogListElement) {
             binding.tvItemNumber.text = item.itemNumber.toString()
             binding.tvTimeOn.text = item.formattedTimeOn
             binding.tvTimeOff.text = item.formattedTimeOff

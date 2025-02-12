@@ -4,9 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.smione.thismuch.R
-import com.smione.thismuch.repository.MockAccessRepository
+import com.smione.thismuch.repository.MockAccessLogRepository
 import com.smione.thismuch.ui.activitycontract.MainActivityContract
-import com.smione.thismuch.ui.fragment.AccessListFragment
+import com.smione.thismuch.ui.fragment.AccessLogListFragment
 import com.smione.thismuch.ui.fragment.MainFragment
 
 class MainActivity : AppCompatActivity(), MainActivityContract {
@@ -18,11 +18,11 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
         replaceFragmentToMainFragment()
     }
 
-    override fun replaceFragmentToAccessListFragment() {
+    override fun replaceFragmentToAccessLogListFragment() {
         Log.v("MainActivity", "replaceFragmentToAccessListFragment")
-        val fragment = AccessListFragment.newInstance(MockAccessRepository())
+        val fragment = AccessLogListFragment.newInstance(MockAccessLogRepository())
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment, fragment, AccessListFragment.TAG)
+            .replace(R.id.fragment, fragment, AccessLogListFragment.TAG)
             .commit()
     }
 

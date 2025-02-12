@@ -10,6 +10,6 @@
     android:layout_marginLeft="16dp"
     android:layout_marginRight="16dp"
     app:layoutManager="LinearLayoutManager"
-    tools:context=".ui.fragment.AccessListFragment"
+    tools:context=".ui.fragment.AccessLogListFragment"
     tools:listitem="@layout/fragment_access_item"
     android:scrollbars="vertical" />

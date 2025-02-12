@@ -6,17 +6,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.smione.thismuch.databinding.FragmentAccessListBinding
-import com.smione.thismuch.repositorycontract.AccessRepositoryContract
-import com.smione.thismuch.ui.fragment.recyclerview.AccessListRecyclerViewAdapter
+import com.smione.thismuch.repositorycontract.AccessLogRepositoryContract
+import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListRecyclerViewAdapter
 
-class AccessListFragment(private val accessRepository: AccessRepositoryContract) : Fragment() {
+class AccessLogListFragment(private val accessRepository: AccessLogRepositoryContract) :
+    Fragment() {
 
     private lateinit var binding: FragmentAccessListBinding
 
     companion object {
         const val TAG = "AccessListFragment"
-        fun newInstance(accessRepository: AccessRepositoryContract): AccessListFragment =
-            AccessListFragment(accessRepository)
+        fun newInstance(accessRepository: AccessLogRepositoryContract): AccessLogListFragment =
+            AccessLogListFragment(accessRepository)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -29,6 +30,6 @@ class AccessListFragment(private val accessRepository: AccessRepositoryContract)
         super.onViewCreated(view, savedInstanceState)
         val headers = accessRepository.getHeaders()
         val accessList = accessRepository.getAccessList()
-        binding.rvList.adapter = AccessListRecyclerViewAdapter(headers, accessList)
+        binding.rvList.adapter = AccessLogListRecyclerViewAdapter(headers, accessList)
     }
 }
