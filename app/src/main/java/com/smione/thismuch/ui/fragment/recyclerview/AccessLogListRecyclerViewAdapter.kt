@@ -43,7 +43,7 @@ class AccessLogListRecyclerViewAdapter(
             holder.bind(headers)
         } else if (holder is ItemViewHolder) {
             val item = values[position - 1]
-            holder.bind(item)
+            holder.bind(position, item)
         }
     }
 
@@ -61,8 +61,8 @@ class AccessLogListRecyclerViewAdapter(
 
     inner class ItemViewHolder(private val binding: FragmentAccessItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: AccessLogListElement) {
-            binding.tvItemNumber.text = item.itemNumber.toString()
+        fun bind(position: Int, item: AccessLogListElement) {
+            binding.tvItemNumber.text = position.toString()
             binding.tvTimeOn.text = item.formattedTimeOn
             binding.tvTimeOff.text = item.formattedTimeOff
             binding.tvTotalTime.text = item.formattedTotalTime
