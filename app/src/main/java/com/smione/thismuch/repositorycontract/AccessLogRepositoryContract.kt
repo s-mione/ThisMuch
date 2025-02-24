@@ -8,6 +8,7 @@ import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 interface AccessLogRepositoryContract {
 
     fun getHeaders(): List<String>
+
     fun getAccessList(): List<AccessLogListElement>
 
     fun saveLog(element: AccessLogEntity)
