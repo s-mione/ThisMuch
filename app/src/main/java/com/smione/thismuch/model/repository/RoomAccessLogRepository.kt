@@ -11,10 +11,7 @@ import androidx.room.RoomDatabase
 
 class RoomAccessLogRepository(val context: Context) : AccessLogRepositoryInterface {
 
-    private val db = Room.databaseBuilder(
-        context,
-        RoomAccessLogRepositoryDatabase::class.java, "AccessLogRepository"
-    ).build().roomAccessLogDao()
+    private val db = RoomAccessLogRepositoryDatabase.getDatabase(context).roomAccessLogDao()
 
     override fun getHeaders(): List<String> {
         return listOf("No.", "Time On", "Time Off", "Total Time")
@@ -32,6 +29,23 @@ class RoomAccessLogRepository(val context: Context) : AccessLogRepositoryInterfa
 @Database(entities = [AccessLogEntity::class], version = 1)
 abstract class RoomAccessLogRepositoryDatabase : RoomDatabase() {
     abstract fun roomAccessLogDao(): RoomAccessLogDao
+
+    companion object {
+        @Volatile
+        private var dbSingleton: RoomAccessLogRepositoryDatabase? = null
+
+        fun getDatabase(context: Context): RoomAccessLogRepositoryDatabase {
+            return dbSingleton ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    RoomAccessLogRepositoryDatabase::class.java,
+                    "AccessLogRepository"
+                ).build()
+                dbSingleton = instance
+                instance
+            }
+        }
+    }
 }
 
 @Dao
