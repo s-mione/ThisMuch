@@ -12,7 +12,7 @@ class TimeNotificationUtils : NotificationUtils() {
         private const val TIME_NOTIFICATION_ID = 1
         fun sendNotificationForTime(context: Context, fragment: Fragment, hours: Int,
                                     minutes: Int) {
-            val notification = this.createNotificationForTime(context, hours, minutes)
+            val notification = createNotificationForTime(context, hours, minutes)
             sendNotification(context, fragment, TIME_NOTIFICATION_ID, notification)
         }
 
