@@ -13,6 +13,7 @@ import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContrac
 import com.smione.thismuch.service.TimeNotificationService
 import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListRecyclerViewAdapter
+import com.smione.thismuch.utils.init.MainActivityUtils
 
 class AccessLogListFragment(private val accessLogRepository: AccessLogRepositoryInterface,
                             private val timeNotificationService: TimeNotificationService) :
@@ -37,5 +38,12 @@ class AccessLogListFragment(private val accessLogRepository: AccessLogRepository
         val headers = accessRepository.getHeaders()
         val accessList = accessRepository.getAccessList()
         binding.rvList.adapter = AccessLogListRecyclerViewAdapter(headers, accessList)
+
+        MainActivityUtils.askToIgnoreBatteryOptimization(requireContext())
+        MainActivityUtils.startTimeNotificationServiceIfNotRunning(
+            context,
+            timeNotificationService,
+            this
+        )
     }
 }
