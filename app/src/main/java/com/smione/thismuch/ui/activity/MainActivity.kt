@@ -24,6 +24,8 @@ interface ServiceConnectionCallback {
 
 class MainActivity : AppCompatActivity(), MainActivityContract {
 
+    private lateinit var accessLogRepository: AccessLogRepositoryInterface
+
     private lateinit var timeNotificationService: TimeNotificationService
     private var isBound = false
 
@@ -46,13 +48,32 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.v("MainActivity", "onCreate")
         super.onCreate(savedInstanceState)
+        accessLogRepository = RoomAccessLogRepository(this)
+
+        Intent(this, TimeNotificationService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+
         setContentView(R.layout.activity_main)
-        replaceFragmentToMainFragment()
+        serviceConnectionCallback = object : ServiceConnectionCallback {
+            override fun onServiceConnected() {
+                replaceFragmentToAccessLogListFragment()
+            }
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isBound) {
+            unbindService(connection)
+            isBound = false
+        }
     }
 
     override fun replaceFragmentToAccessLogListFragment() {
         Log.v("MainActivity", "replaceFragmentToAccessListFragment")
-        val fragment = AccessLogListFragment.newInstance(MockAccessLogRepository())
+        val fragment =
+            AccessLogListFragment.newInstance(accessLogRepository, timeNotificationService)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment, fragment, AccessLogListFragment.TAG)
             .commit()

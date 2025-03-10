@@ -1,5 +1,6 @@
 package com.smione.thismuch.ui.fragment.recyclerview
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -8,12 +9,20 @@ import com.smione.thismuch.model.converter.InstantStringConverter
 
 class AccessLogListRecyclerViewAdapter(
     private val headers: List<String>,
-    private val values: List<AccessLogListElement>)
+    private var values: List<AccessLogListElement>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_HEADER = 0
         private const val VIEW_TYPE_ITEM = 1
+    }
+
+    fun updateValues(values: List<AccessLogListElement>, recyclerView: RecyclerView) {
+        Log.v("AccessLogListRecyclerViewAdapter", "updateValues: $values")
+        recyclerView.post {
+            this.values = values
+            notifyDataSetChanged()
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
