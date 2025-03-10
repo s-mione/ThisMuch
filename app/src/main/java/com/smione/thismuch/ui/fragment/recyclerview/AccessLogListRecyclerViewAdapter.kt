@@ -64,9 +64,12 @@ class AccessLogListRecyclerViewAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int, item: AccessLogListElement) {
             binding.tvItemNumber.text = position.toString()
-            binding.tvTimeOn.text = item.formattedTimeOn
-            binding.tvTimeOff.text = item.formattedTimeOff
-            binding.tvTotalTime.text = item.formattedTotalTime
+            binding.tvTimeOn.text =
+                item.timeOn?.let { InstantStringConverter.fromInstantToString(it) }
+            binding.tvTimeOff.text =
+                item.timeOff?.let { InstantStringConverter.fromInstantToString(it) }
+            binding.tvTotalTime.text =
+                item.totalTime?.let { InstantStringConverter.fromInstantToString(it) }
         }
     }
 
