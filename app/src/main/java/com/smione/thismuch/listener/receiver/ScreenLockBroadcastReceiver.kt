@@ -1,4 +1,4 @@
-package com.smione.thismuch.receiver
+package com.smione.thismuch.listener.receiver
 
 import android.app.Service
 import android.content.BroadcastReceiver

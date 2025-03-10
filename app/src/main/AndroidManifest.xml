@@ -34,7 +34,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".receiver.BootBroadcastReceiver"
+            android:name=".listener.receiver.BootBroadcastReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -43,7 +43,7 @@
         </receiver>
 
         <receiver
-            android:name=".receiver.ScreenUnlockBroadcastReceiver"
+            android:name=".listener.receiver.ScreenUnlockBroadcastReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -52,7 +52,7 @@
         </receiver>
 
         <receiver
-            android:name=".receiver.ScreenLockBroadcastReceiver"
+            android:name=".listener.receiver.ScreenLockBroadcastReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>

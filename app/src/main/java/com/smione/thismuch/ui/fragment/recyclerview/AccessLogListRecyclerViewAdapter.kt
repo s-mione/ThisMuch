@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.smione.thismuch.databinding.FragmentAccessItemBinding
+import com.smione.thismuch.model.converter.InstantStringConverter
 
 class AccessLogListRecyclerViewAdapter(
     private val headers: List<String>,

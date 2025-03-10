@@ -1,6 +1,6 @@
-package com.smione.thismuch.converter
+package com.smione.thismuch.model.converter
 
-import com.smione.thismuch.repositorycontract.AccessLogEntity
+import com.smione.thismuch.model.repository.AccessLogEntity
 import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 import java.time.Instant
 

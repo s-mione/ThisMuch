@@ -1,7 +1,6 @@
-package com.smione.thismuch.repository
+package com.smione.thismuch.model.repository
 
 import android.content.Context
-import android.util.Log
 import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Delete
@@ -9,10 +8,6 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.smione.thismuch.converter.AccessLogListElementAccessLogEntityConverter
-import com.smione.thismuch.repositorycontract.AccessLogEntity
-import com.smione.thismuch.repositorycontract.AccessLogRepositoryContract
-import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 
 class RoomAccessLogRepository(val context: Context) : AccessLogRepositoryContract {
 

@@ -7,9 +7,9 @@ import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
-import com.smione.thismuch.notification.TimeNotificationUtils
-import com.smione.thismuch.receiver.ScreenUnlockBroadcastReceiver
+import com.smione.thismuch.listener.receiver.ScreenUnlockBroadcastReceiver
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
+import com.smione.thismuch.utils.notification.TimeNotificationUtils
 import java.time.Instant
 import java.time.ZoneId
 

@@ -4,7 +4,9 @@ import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.smione.thismuch.R
-import com.smione.thismuch.repository.MockAccessLogRepository
+import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
+import com.smione.thismuch.model.repository.RoomAccessLogRepository
+import com.smione.thismuch.service.TimeNotificationService
 import com.smione.thismuch.ui.activitycontract.MainActivityContract
 import com.smione.thismuch.ui.fragment.AccessLogListFragment
 import com.smione.thismuch.ui.fragment.MainFragment

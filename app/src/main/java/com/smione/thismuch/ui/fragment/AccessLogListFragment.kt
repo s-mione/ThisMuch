@@ -6,7 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.smione.thismuch.databinding.FragmentAccessListBinding
-import com.smione.thismuch.repositorycontract.AccessLogRepositoryContract
+import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
+import com.smione.thismuch.presenter.AccessLogRepositoryPresenter
+import com.smione.thismuch.presenter.RuntimeDispatcherProvider
+import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
+import com.smione.thismuch.service.TimeNotificationService
+import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListRecyclerViewAdapter
 
 class AccessLogListFragment(private val accessRepository: AccessLogRepositoryContract) :

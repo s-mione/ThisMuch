@@ -9,8 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.smione.thismuch.databinding.FragmentMainBinding
-import com.smione.thismuch.service.TimeNotificationService
-import com.smione.thismuch.ui.dialog.AskToIgnoreBatteryOptimizationDialog
+import com.smione.thismuch.utils.init.MainActivityUtils
 
 class MainFragment() : Fragment() {
 

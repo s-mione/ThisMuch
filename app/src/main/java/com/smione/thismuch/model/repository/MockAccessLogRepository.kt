@@ -1,4 +1,4 @@
-package com.smione.thismuch.repository
+package com.smione.thismuch.model.repository
 
 import com.smione.thismuch.converter.AccessLogListElementAccessLogEntityConverter
 import com.smione.thismuch.repositorycontract.AccessLogEntity

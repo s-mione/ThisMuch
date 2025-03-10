@@ -1,4 +1,4 @@
-package com.smione.thismuch.notification
+package com.smione.thismuch.utils.notification
 
 import android.app.Notification
 import android.content.Context
