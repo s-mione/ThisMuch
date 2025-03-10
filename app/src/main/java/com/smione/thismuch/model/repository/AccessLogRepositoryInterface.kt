@@ -1,17 +1,14 @@
-package com.smione.thismuch.repositorycontract
+package com.smione.thismuch.model.repository
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 
-interface AccessLogRepositoryContract {
+interface AccessLogRepositoryInterface {
 
     fun getHeaders(): List<String>
-
-    fun getAccessList(): List<AccessLogListElement>
-
-    fun saveLog(element: AccessLogEntity)
+    suspend fun getAccessLogList(): List<AccessLogEntity>
+    suspend fun saveAccessLogElement(element: AccessLogEntity)
 
 }
 

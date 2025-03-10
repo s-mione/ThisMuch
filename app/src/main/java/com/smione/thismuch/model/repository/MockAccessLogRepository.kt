@@ -1,11 +1,6 @@
 package com.smione.thismuch.model.repository
 
-import com.smione.thismuch.converter.AccessLogListElementAccessLogEntityConverter
-import com.smione.thismuch.repositorycontract.AccessLogEntity
-import com.smione.thismuch.repositorycontract.AccessLogRepositoryContract
-import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
-
-class MockAccessLogRepository() : AccessLogRepositoryContract {
+class MockAccessLogRepository() : AccessLogRepositoryInterface {
 
     companion object {
 
@@ -92,13 +87,11 @@ class MockAccessLogRepository() : AccessLogRepositoryContract {
         return listOf("No.", "Time On", "Time Off", "Total Time")
     }
 
-    override fun getAccessList(): List<AccessLogListElement> {
-        return accessList.map {
-            AccessLogListElementAccessLogEntityConverter.fromAccessEntityToAccessListElement(it)
-        }
+    override suspend fun getAccessLogList(): List<AccessLogEntity> {
+        return accessList
     }
 
-    override fun saveLog(element: AccessLogEntity) {
+    override suspend fun saveAccessLogElement(element: AccessLogEntity) {
         accessList.add(element)
     }
 

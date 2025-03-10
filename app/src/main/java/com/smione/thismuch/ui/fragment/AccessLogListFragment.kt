@@ -14,8 +14,9 @@ import com.smione.thismuch.service.TimeNotificationService
 import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListRecyclerViewAdapter
 
-class AccessLogListFragment(private val accessRepository: AccessLogRepositoryContract) :
-    Fragment() {
+class AccessLogListFragment(private val accessLogRepository: AccessLogRepositoryInterface,
+                            private val timeNotificationService: TimeNotificationService) :
+    Fragment(), ScreenUnlockBroadcastReceiverContract, AccessLogRepositoryContract.View {
 
     private lateinit var binding: FragmentAccessListBinding
 

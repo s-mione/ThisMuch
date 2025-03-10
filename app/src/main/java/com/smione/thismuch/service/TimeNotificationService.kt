@@ -13,7 +13,8 @@ import com.smione.thismuch.utils.notification.TimeNotificationUtils
 import java.time.Instant
 import java.time.ZoneId
 
-class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract {
+class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract,
+    ScreenLockBroadcastReceiverContract, AccessLogRepositoryContract.View {
 
     companion object {
         private const val NOTIFICATION_ID: Int = 1
@@ -68,5 +69,9 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
         val minute = time.atZone(ZoneId.systemDefault()).minute
         Log.v("TimeNotificationService", "buildNotification: at time [${hour}:${minute}]")
         return TimeNotificationUtils.createNotificationForTime(this, hour, minute)
+    }
+
+    override fun onGetAccessLogList(accessLogList: List<AccessLogListElement>) {
+        // Do nothing
     }
 }

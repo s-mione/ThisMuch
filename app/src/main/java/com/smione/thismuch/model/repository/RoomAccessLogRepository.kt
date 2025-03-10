@@ -9,7 +9,7 @@ import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-class RoomAccessLogRepository(val context: Context) : AccessLogRepositoryContract {
+class RoomAccessLogRepository(val context: Context) : AccessLogRepositoryInterface {
 
     private val db = Room.databaseBuilder(
         context,
@@ -20,19 +20,13 @@ class RoomAccessLogRepository(val context: Context) : AccessLogRepositoryContrac
         return listOf("No.", "Time On", "Time Off", "Total Time")
     }
 
-    override fun getAccessList(): List<AccessLogListElement> {
-        val accessLogList = db.getAll().map {
-            AccessLogListElementAccessLogEntityConverter.fromAccessEntityToAccessListElement(it)
-        }
-        Log.v("RoomAccessLogRepository", "getAccessList: $accessLogList")
-        return accessLogList;
-    }
-
-    override fun saveLog(element: AccessLogEntity) {
-        Log.v("RoomAccessLogRepository", "saving element: $element")
+    override suspend fun saveAccessLogElement(element: AccessLogEntity) {
         db.insertAll(element)
     }
 
+    override suspend fun getAccessLogList(): List<AccessLogEntity> {
+        return db.getAll()
+    }
 }
 
 @Database(entities = [AccessLogEntity::class], version = 1)
@@ -42,6 +36,7 @@ abstract class RoomAccessLogRepositoryDatabase : RoomDatabase() {
 
 @Dao
 interface RoomAccessLogDao {
+
     @Query("SELECT * FROM AccessLogEntity")
     fun getAll(): List<AccessLogEntity>
 
