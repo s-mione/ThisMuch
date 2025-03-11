@@ -1,28 +1,65 @@
 package com.smione.thismuch.ui.activity
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import android.os.Bundle
+import android.os.IBinder
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.smione.thismuch.R
-import com.smione.thismuch.repository.MockAccessRepository
+import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
+import com.smione.thismuch.model.repository.RoomAccessLogRepository
+import com.smione.thismuch.service.TimeNotificationService
 import com.smione.thismuch.ui.activitycontract.MainActivityContract
-import com.smione.thismuch.ui.fragment.AccessListFragment
+import com.smione.thismuch.ui.fragment.AccessLogListFragment
 import com.smione.thismuch.ui.fragment.MainFragment
 
+interface ServiceConnectionCallback {
+    fun onServiceConnected()
+}
+
 class MainActivity : AppCompatActivity(), MainActivityContract {
+
+    private lateinit var accessLogRepository: AccessLogRepositoryInterface
+
+    private lateinit var timeNotificationService: TimeNotificationService
+    private var isBound = false
+
+    private var serviceConnectionCallback: ServiceConnectionCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.v("MainActivity", "onCreate")
         super.onCreate(savedInstanceState)
+        accessLogRepository = RoomAccessLogRepository(this)
+
+        Intent(this, TimeNotificationService::class.java).also { intent ->
+            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+        }
+
         setContentView(R.layout.activity_main)
-        replaceFragmentToMainFragment()
+        serviceConnectionCallback = object : ServiceConnectionCallback {
+            override fun onServiceConnected() {
+                replaceFragmentToAccessLogListFragment()
+            }
+        }
     }
 
-    override fun replaceFragmentToAccessListFragment() {
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isBound) {
+            unbindService(connection)
+            isBound = false
+        }
+    }
+
+    override fun replaceFragmentToAccessLogListFragment() {
         Log.v("MainActivity", "replaceFragmentToAccessListFragment")
-        val fragment = AccessListFragment.newInstance(MockAccessRepository())
+        val fragment =
+            AccessLogListFragment.newInstance(accessLogRepository, timeNotificationService)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment, fragment, AccessListFragment.TAG)
+            .replace(R.id.fragment, fragment, AccessLogListFragment.TAG)
             .commit()
     }
 
@@ -32,5 +69,19 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment, fragment, MainFragment.TAG)
             .commit()
+    }
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            Log.v("MainActivity", "onServiceConnected")
+            val binder = service as TimeNotificationService.LocalBinder
+            timeNotificationService = binder.getService()
+            isBound = true
+            serviceConnectionCallback?.onServiceConnected()
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            isBound = false
+        }
     }
 }

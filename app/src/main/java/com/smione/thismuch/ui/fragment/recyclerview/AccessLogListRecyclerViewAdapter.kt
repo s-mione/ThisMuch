@@ -1,18 +1,29 @@
 package com.smione.thismuch.ui.fragment.recyclerview
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.smione.thismuch.databinding.FragmentAccessItemBinding
+import com.smione.thismuch.model.converter.InstantStringConverter
 
-class AccessListRecyclerViewAdapter(
+class AccessLogListRecyclerViewAdapter(
     private val headers: List<String>,
-    private val values: List<AccessListElement>)
+    private var values: List<AccessLogListElement>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_HEADER = 0
         private const val VIEW_TYPE_ITEM = 1
+    }
+
+    fun updateValues(values: List<AccessLogListElement>, recyclerView: RecyclerView) {
+        Log.v("AccessLogListRecyclerViewAdapter", "updateValues: $values")
+        recyclerView.post {
+            val numberOfItemsAdded = values.size - this.values.size
+            this.values = values
+            notifyItemRangeInserted(this.values.size - numberOfItemsAdded, numberOfItemsAdded)
+        }
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -43,7 +54,7 @@ class AccessListRecyclerViewAdapter(
             holder.bind(headers)
         } else if (holder is ItemViewHolder) {
             val item = values[position - 1]
-            holder.bind(item)
+            holder.bind(position, item)
         }
     }
 
@@ -61,12 +72,14 @@ class AccessListRecyclerViewAdapter(
 
     inner class ItemViewHolder(private val binding: FragmentAccessItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        fun bind(item: AccessListElement) {
-            binding.tvItemNumber.text = item.itemNumber.toString()
-            binding.tvTimeOn.text = item.formattedTimeOn
-            binding.tvTimeOff.text = item.formattedTimeOff
-            binding.tvTotalTime.text = item.formattedTotalTime
+        fun bind(position: Int, item: AccessLogListElement) {
+            binding.tvItemNumber.text = position.toString()
+            binding.tvTimeOn.text =
+                item.timeOn?.let { InstantStringConverter.fromInstantToString(it) }
+            binding.tvTimeOff.text =
+                item.timeOff?.let { InstantStringConverter.fromInstantToString(it) }
+            binding.tvTotalTime.text =
+                item.totalTime?.let { InstantStringConverter.fromInstantToString(it) }
         }
     }
-
 }

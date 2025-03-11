@@ -1,4 +1,4 @@
-package com.smione.thismuch.notification
+package com.smione.thismuch.utils.notification
 
 import android.app.Notification
 import android.content.Context
@@ -12,7 +12,7 @@ class TimeNotificationUtils : NotificationUtils() {
         private const val TIME_NOTIFICATION_ID = 1
         fun sendNotificationForTime(context: Context, fragment: Fragment, hours: Int,
                                     minutes: Int) {
-            val notification = this.createNotificationForTime(context, hours, minutes)
+            val notification = createNotificationForTime(context, hours, minutes)
             sendNotification(context, fragment, TIME_NOTIFICATION_ID, notification)
         }
 
