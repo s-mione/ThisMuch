@@ -22,7 +22,7 @@ class AccessLogListRecyclerViewAdapter(
         recyclerView.post {
             val numberOfItemsAdded = values.size - this.values.size
             this.values = values
-            notifyItemRangeInserted(this.values.size - numberOfItemsAdded, numberOfItemsAdded)
+            notifyItemRangeInserted(0, numberOfItemsAdded)
         }
     }
 

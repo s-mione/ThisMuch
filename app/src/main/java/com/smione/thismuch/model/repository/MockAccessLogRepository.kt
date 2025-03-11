@@ -93,7 +93,7 @@ class MockAccessLogRepository() : AccessLogRepositoryInterface {
     }
 
     override suspend fun getAccessLogListSortedByTimeDesc(): List<AccessLogEntity> {
-        return accessList.sortedByDescending { it.timeOn }
+        return accessList.sortedByDescending { it.timeOff }
     }
 
     override suspend fun saveAccessLogEntity(element: AccessLogEntity) {
