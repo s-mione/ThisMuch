@@ -11,8 +11,7 @@ import com.smione.thismuch.receivercontract.ScreenLockBroadcastReceiverContract
 
 class ScreenLockBroadcastReceiver(private val screenLockBroadcastReceiverContract: ScreenLockBroadcastReceiverContract) :
     BroadcastReceiver() {
-
-
+        
     override fun onReceive(context: Context?, intent: Intent?) {
         Log.v("ScreenLockBroadcastReceiver", "onReceive")
         if (intent?.action == Intent.ACTION_SCREEN_OFF) {

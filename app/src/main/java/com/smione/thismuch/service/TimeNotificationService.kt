@@ -43,15 +43,6 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
 
     private val binder = LocalBinder()
 
-    inner class LocalBinder : Binder() {
-        fun getService(): TimeNotificationService = this@TimeNotificationService
-    }
-
-    override fun onBind(intent: Intent?): IBinder {
-        Log.v("TimeNotificationService", "onBind")
-        return binder
-    }
-
     override fun onCreate() {
         Log.v("TimeNotificationService", "onCreate")
         super.onCreate()
@@ -60,11 +51,8 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
             AccessLogRepositoryPresenter(RuntimeDispatcherProvider(), RoomAccessLogRepository(this))
         roomAccessLogRepositoryPresenter.bindView(this)
 
-        screenUnlockBroadcastReceiver = ScreenUnlockBroadcastReceiver(this)
-        screenUnlockBroadcastReceiver.register(this)
+        this.registerReceivers()
 
-        screenLockBroadcastReceiver = ScreenLockBroadcastReceiver(this)
-        screenLockBroadcastReceiver.register(this)
         startForegroundService()
     }
 
@@ -85,31 +73,21 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
 
     override fun onScreenUnlock() {
         Log.v("TimeNotificationService", "onScreenUnlock")
-        for (subscriber in unlockReceiverSubscribers) {
-            subscriber.onScreenUnlock()
-        }
-        notification = buildNotification()
-        val notificationManager: NotificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(NOTIFICATION_ID, notification)
+        this.notifyUnlockReceivers()
+
+        this.createAndShowNotification()
+
         this.saveAccessLogEntityIfFilled(true)
-        temporaryAccessLogListElement.timeOn = Instant.now()
+        setTemporaryAccessLogListElementValuesWhenUnlock()
     }
 
     override fun onScreenLock() {
         Log.v("TimeNotificationService", "onScreenLock")
-        if (temporaryAccessLogListElement.timeOn != null) {
-            temporaryAccessLogListElement.timeOff = Instant.now()
-
-            temporaryAccessLogListElement.totalTime = this.calculateTotalTime(
-                temporaryAccessLogListElement.timeOn!!,
-                temporaryAccessLogListElement.timeOff!!
-            )
-        }
+        setTemporaryAccessLogListElementValuesWhenLock()
         this.saveAccessLogEntityIfFilled()
     }
 
-    fun calculateTotalTime(timeOn: Instant, timeOff: Instant): Instant {
+    private fun calculateTotalTime(timeOn: Instant, timeOff: Instant): Instant {
         return timeOff.minusSeconds(timeOn.epochSecond)
     }
 
@@ -133,7 +111,51 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
             "TimeNotificationService",
             "checkIfTemporaryAccessLogEntityIsToSave: temporary element $temporaryAccessLogListElement"
         )
-        return temporaryAccessLogListElement.timeOn != null && temporaryAccessLogListElement.timeOff != null && temporaryAccessLogListElement.totalTime != null;
+        return temporaryAccessLogListElement.timeOn != null && temporaryAccessLogListElement.timeOff != null && temporaryAccessLogListElement.totalTime != null
+    }
+
+    private fun buildNotification(): Notification {
+        val time: Instant = Instant.now()
+        val hour = time.atZone(ZoneId.systemDefault()).hour
+        val minute = time.atZone(ZoneId.systemDefault()).minute
+        Log.v("TimeNotificationService", "buildNotification: at time [${hour}:${minute}]")
+        return TimeNotificationUtils.createNotificationForTime(this, hour, minute)
+    }
+
+    private fun setTemporaryAccessLogListElementValuesWhenUnlock() {
+        temporaryAccessLogListElement.timeOn = Instant.now()
+    }
+
+    private fun setTemporaryAccessLogListElementValuesWhenLock() {
+        if (temporaryAccessLogListElement.timeOn != null) {
+            temporaryAccessLogListElement.timeOff = Instant.now()
+
+            temporaryAccessLogListElement.totalTime = this.calculateTotalTime(
+                temporaryAccessLogListElement.timeOn!!,
+                temporaryAccessLogListElement.timeOff!!
+            )
+        }
+    }
+
+    private fun createAndShowNotification() {
+        notification = buildNotification()
+        val notificationManager: NotificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        notificationManager.notify(NOTIFICATION_ID, notification)
+    }
+
+    private fun notifyUnlockReceivers() {
+        for (subscriber in unlockReceiverSubscribers) {
+            subscriber.onScreenUnlock()
+        }
+    }
+
+    private fun registerReceivers() {
+        screenUnlockBroadcastReceiver = ScreenUnlockBroadcastReceiver(this)
+        screenUnlockBroadcastReceiver.register(this)
+
+        screenLockBroadcastReceiver = ScreenLockBroadcastReceiver(this)
+        screenLockBroadcastReceiver.register(this)
     }
 
     private fun startForegroundService() {
@@ -143,12 +165,13 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
         isRunning = true
     }
 
-    private fun buildNotification(): Notification {
-        val time: Instant = Instant.now()
-        val hour = time.atZone(ZoneId.systemDefault()).hour
-        val minute = time.atZone(ZoneId.systemDefault()).minute
-        Log.v("TimeNotificationService", "buildNotification: at time [${hour}:${minute}]")
-        return TimeNotificationUtils.createNotificationForTime(this, hour, minute)
+    inner class LocalBinder : Binder() {
+        fun getService(): TimeNotificationService = this@TimeNotificationService
+    }
+
+    override fun onBind(intent: Intent?): IBinder {
+        Log.v("TimeNotificationService", "onBind")
+        return binder
     }
 
     override fun onGetAccessLogList(accessLogList: List<AccessLogListElement>) {

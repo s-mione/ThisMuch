@@ -8,6 +8,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.smione.thismuch.model.repository.entity.AccessLogEntity
 
 class RoomAccessLogRepository(val context: Context) : AccessLogRepositoryInterface {
 
@@ -17,7 +18,7 @@ class RoomAccessLogRepository(val context: Context) : AccessLogRepositoryInterfa
         return listOf("No.", "Time On", "Time Off", "Total Time")
     }
 
-    override suspend fun saveAccessLogElement(element: AccessLogEntity) {
+    override suspend fun saveAccessLogEntity(element: AccessLogEntity) {
         db.insertAll(element)
     }
 

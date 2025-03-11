@@ -6,9 +6,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.util.AttributeSet
 import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.smione.thismuch.R
 import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
@@ -30,20 +28,6 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
     private var isBound = false
 
     private var serviceConnectionCallback: ServiceConnectionCallback? = null
-
-    private val connection = object : ServiceConnection {
-        override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            Log.v("MainActivity", "onServiceConnected")
-            val binder = service as TimeNotificationService.LocalBinder
-            timeNotificationService = binder.getService()
-            isBound = true
-            serviceConnectionCallback?.onServiceConnected()
-        }
-
-        override fun onServiceDisconnected(arg0: ComponentName) {
-            isBound = false
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.v("MainActivity", "onCreate")
@@ -85,5 +69,19 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment, fragment, MainFragment.TAG)
             .commit()
+    }
+
+    private val connection = object : ServiceConnection {
+        override fun onServiceConnected(className: ComponentName, service: IBinder) {
+            Log.v("MainActivity", "onServiceConnected")
+            val binder = service as TimeNotificationService.LocalBinder
+            timeNotificationService = binder.getService()
+            isBound = true
+            serviceConnectionCallback?.onServiceConnected()
+        }
+
+        override fun onServiceDisconnected(arg0: ComponentName) {
+            isBound = false
+        }
     }
 }

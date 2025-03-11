@@ -20,7 +20,6 @@ class AccessLogRepositoryPresenter(
     override val coroutineContext: CoroutineContext
         get() = SupervisorJob() + dispatcherProvider.io()
 
-
     override fun bindView(view: AccessLogRepositoryContract.View) {
         this.view = view
     }
@@ -42,11 +41,9 @@ class AccessLogRepositoryPresenter(
     override fun saveAccessLogElement(element: AccessLogListElement) {
         Log.v("RoomAccessLogRepository", "saving element: $element")
         launch {
-            accessLogRepository.saveAccessLogElement(
-                AccessLogListElementAccessLogEntityConverter.fromAccessListElementToAccessEntity(
-                    element
-                )
-            )
+            val accessEntity = AccessLogListElementAccessLogEntityConverter
+                .fromAccessListElementToAccessEntity(element)
+            accessLogRepository.saveAccessLogEntity(accessEntity)
         }
     }
 }

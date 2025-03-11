@@ -1,9 +1,10 @@
 package com.smione.thismuch.model.repository
 
+import com.smione.thismuch.model.repository.entity.AccessLogEntity
+
 class MockAccessLogRepository() : AccessLogRepositoryInterface {
 
     companion object {
-
         val accessList = mutableListOf<AccessLogEntity>(
             AccessLogEntity(
                 "2023-01-01T10:00:00Z",
@@ -91,8 +92,7 @@ class MockAccessLogRepository() : AccessLogRepositoryInterface {
         return accessList
     }
 
-    override suspend fun saveAccessLogElement(element: AccessLogEntity) {
+    override suspend fun saveAccessLogEntity(element: AccessLogEntity) {
         accessList.add(element)
     }
-
 }

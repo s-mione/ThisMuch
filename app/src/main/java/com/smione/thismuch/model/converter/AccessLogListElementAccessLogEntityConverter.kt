@@ -1,6 +1,6 @@
 package com.smione.thismuch.model.converter
 
-import com.smione.thismuch.model.repository.AccessLogEntity
+import com.smione.thismuch.model.repository.entity.AccessLogEntity
 import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 
 class AccessLogListElementAccessLogEntityConverter {

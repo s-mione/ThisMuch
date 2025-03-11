@@ -20,8 +20,9 @@ class AccessLogListRecyclerViewAdapter(
     fun updateValues(values: List<AccessLogListElement>, recyclerView: RecyclerView) {
         Log.v("AccessLogListRecyclerViewAdapter", "updateValues: $values")
         recyclerView.post {
+            val numberOfItemsAdded = values.size - this.values.size
             this.values = values
-            notifyDataSetChanged()
+            notifyItemRangeInserted(this.values.size - numberOfItemsAdded, numberOfItemsAdded)
         }
     }
 
@@ -81,5 +82,4 @@ class AccessLogListRecyclerViewAdapter(
                 item.totalTime?.let { InstantStringConverter.fromInstantToString(it) }
         }
     }
-
 }
