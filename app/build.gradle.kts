@@ -69,6 +69,8 @@ dependencies {
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.room.common)
     implementation(libs.androidx.room.ktx)
+    implementation(libs.material)
+    implementation(libs.firebase.inappmessaging)
     kapt(libs.androidx.room.compiler.v252)
     kapt(libs.androidx.room.runtime)
     testImplementation(libs.junit)

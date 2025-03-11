@@ -29,6 +29,10 @@ class RoomAccessLogRepository(val context: Context) : AccessLogRepositoryInterfa
     override suspend fun getAccessLogListSortedByTimeDesc(): List<AccessLogEntity> {
         return db.getAllSortedByTimeDesc()
     }
+
+    override suspend fun deleteAll() {
+        db.deleteAll()
+    }
 }
 
 @Database(entities = [AccessLogEntity::class], version = 1)
@@ -67,4 +71,7 @@ interface RoomAccessLogDao {
 
     @Delete
     fun delete(user: AccessLogEntity)
+
+    @Query("DELETE FROM AccessLogEntity")
+    fun deleteAll()
 }

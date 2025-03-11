@@ -177,4 +177,8 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
     override fun onGetAccessLogList(accessLogList: List<AccessLogListElement>) {
         // Do nothing
     }
+
+    override fun onDeleteAll() {
+        // Do nothing
+    }
 }

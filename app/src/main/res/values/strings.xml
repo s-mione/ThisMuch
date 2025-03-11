@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">ThisMuch</string>
     <string name="textview_placeholder_main">UNLOCK TIME</string>
+    <string name="floating_button_delete_all_content_description">delete all</string>
 </resources>

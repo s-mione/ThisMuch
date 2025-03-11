@@ -5,6 +5,7 @@ import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 interface AccessLogRepositoryContract {
     interface View {
         fun onGetAccessLogList(accessLogList: List<AccessLogListElement>)
+        fun onDeleteAll()
     }
 
     interface Presenter {
@@ -13,5 +14,6 @@ interface AccessLogRepositoryContract {
         fun getHeaders(): List<String>
         fun getAccessLogList()
         fun saveAccessLogElement(element: AccessLogListElement)
+        fun deleteAll()
     }
 }

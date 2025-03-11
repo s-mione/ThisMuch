@@ -26,6 +26,14 @@ class AccessLogListRecyclerViewAdapter(
         }
     }
 
+    fun deleteAll(recyclerView: RecyclerView) {
+        Log.v("AccessLogListRecyclerViewAdapter", "delete all")
+        recyclerView.post {
+            notifyItemRangeRemoved(0, values.size)
+            this.values = emptyList()
+        }
+    }
+
     override fun getItemViewType(position: Int): Int {
         return if (position == 0) VIEW_TYPE_HEADER else VIEW_TYPE_ITEM
     }
