@@ -63,7 +63,7 @@ interface RoomAccessLogDao {
     @Query("SELECT * FROM AccessLogEntity")
     fun getAll(): List<AccessLogEntity>
 
-    @Query("SELECT * FROM AccessLogEntity ORDER BY time_on DESC")
+    @Query("SELECT * FROM AccessLogEntity ORDER BY time_off DESC")
     fun getAllSortedByTimeDesc(): List<AccessLogEntity>
 
     @Insert

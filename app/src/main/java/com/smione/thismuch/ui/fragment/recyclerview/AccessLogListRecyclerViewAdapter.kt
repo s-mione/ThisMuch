@@ -22,7 +22,7 @@ class AccessLogListRecyclerViewAdapter(
         recyclerView.post {
             val numberOfItemsAdded = values.size - this.values.size
             this.values = values
-            notifyItemRangeInserted(this.values.size - numberOfItemsAdded, numberOfItemsAdded)
+            notifyItemRangeInserted(0, numberOfItemsAdded)
         }
     }
 
@@ -81,7 +81,7 @@ class AccessLogListRecyclerViewAdapter(
     inner class ItemViewHolder(private val binding: FragmentAccessItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int, item: AccessLogListElement) {
-            binding.tvItemNumber.text = position.toString()
+            binding.tvItemNumber.text = (values.size - position + 1).toString()
             binding.tvTimeOn.text =
                 item.timeOn?.let { InstantStringConverter.fromInstantToString(it) }
             binding.tvTimeOff.text =
