@@ -81,7 +81,7 @@ class AccessLogListRecyclerViewAdapter(
     inner class ItemViewHolder(private val binding: FragmentAccessItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int, item: AccessLogListElement) {
-            binding.tvItemNumber.text = position.toString()
+            binding.tvItemNumber.text = (values.size - position + 1).toString()
             binding.tvTimeOn.text =
                 item.timeOn?.let { InstantStringConverter.fromInstantToString(it) }
             binding.tvTimeOff.text =
