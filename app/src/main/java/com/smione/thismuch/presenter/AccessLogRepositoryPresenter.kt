@@ -30,7 +30,7 @@ class AccessLogRepositoryPresenter(
 
     override fun getAccessLogList() {
         launch {
-            val accessLogList = accessLogRepository.getAccessLogList().map {
+            val accessLogList = accessLogRepository.getAccessLogListSortedByTimeDesc().map {
                 AccessLogListElementAccessLogEntityConverter.fromAccessEntityToAccessListElement(it)
             }
             view?.onGetAccessLogList(accessLogList)
