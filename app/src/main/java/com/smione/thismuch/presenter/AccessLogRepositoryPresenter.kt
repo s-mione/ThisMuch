@@ -46,4 +46,12 @@ class AccessLogRepositoryPresenter(
             accessLogRepository.saveAccessLogEntity(accessEntity)
         }
     }
+
+    override fun deleteAll() {
+        Log.v("RoomAccessLogRepository", "delete all")
+        launch {
+            accessLogRepository.deleteAll()
+            view?.onDeleteAll()
+        }
+    }
 }

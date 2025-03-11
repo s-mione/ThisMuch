@@ -66,6 +66,12 @@ class AccessLogListFragment(private val accessLogRepository: AccessLogRepository
         val headers = presenter.getHeaders()
         presenter.getAccessLogList()
         binding.rvList.adapter = AccessLogListRecyclerViewAdapter(headers, emptyList())
+
+        binding.fabDeleteAll.setOnClickListener { deleteAll() }
+    }
+
+    private fun deleteAll() {
+        presenter.deleteAll()
     }
 
     override fun onScreenUnlock() {
@@ -76,6 +82,12 @@ class AccessLogListFragment(private val accessLogRepository: AccessLogRepository
     override fun onGetAccessLogList(accessLogList: List<AccessLogListElement>) {
         (binding.rvList.adapter as AccessLogListRecyclerViewAdapter).updateValues(
             accessLogList,
+            binding.rvList
+        )
+    }
+
+    override fun onDeleteAll() {
+        (binding.rvList.adapter as AccessLogListRecyclerViewAdapter).deleteAll(
             binding.rvList
         )
     }

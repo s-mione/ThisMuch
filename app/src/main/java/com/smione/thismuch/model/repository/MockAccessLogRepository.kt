@@ -99,4 +99,8 @@ class MockAccessLogRepository() : AccessLogRepositoryInterface {
     override suspend fun saveAccessLogEntity(element: AccessLogEntity) {
         accessList.add(element)
     }
+
+    override suspend fun deleteAll() {
+        accessList.clear()
+    }
 }

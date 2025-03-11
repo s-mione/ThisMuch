@@ -7,4 +7,6 @@ interface AccessLogRepositoryInterface {
     suspend fun getAccessLogList(): List<AccessLogEntity>
     suspend fun getAccessLogListSortedByTimeDesc(): List<AccessLogEntity>
     suspend fun saveAccessLogEntity(element: AccessLogEntity)
+
+    suspend fun deleteAll()
 }
