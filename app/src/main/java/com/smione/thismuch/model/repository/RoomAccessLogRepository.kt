@@ -25,6 +25,10 @@ class RoomAccessLogRepository(val context: Context) : AccessLogRepositoryInterfa
     override suspend fun getAccessLogList(): List<AccessLogEntity> {
         return db.getAll()
     }
+
+    override suspend fun getAccessLogListSortedByTimeDesc(): List<AccessLogEntity> {
+        return db.getAllSortedByTimeDesc()
+    }
 }
 
 @Database(entities = [AccessLogEntity::class], version = 1)
@@ -54,6 +58,9 @@ interface RoomAccessLogDao {
 
     @Query("SELECT * FROM AccessLogEntity")
     fun getAll(): List<AccessLogEntity>
+
+    @Query("SELECT * FROM AccessLogEntity ORDER BY time_on DESC")
+    fun getAllSortedByTimeDesc(): List<AccessLogEntity>
 
     @Insert
     fun insertAll(vararg users: AccessLogEntity)
