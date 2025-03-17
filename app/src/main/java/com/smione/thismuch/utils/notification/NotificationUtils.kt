@@ -30,12 +30,14 @@ open class NotificationUtils {
         fun createNotification(context: Context, channelId: String, iconId: Int, title: String,
                                text: String, priority: Int,
                                onGoing: Boolean = false): Notification {
+            this.createNotificationChannel(context, channelId, title, text, priority)
             return NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(iconId)
                 .setContentTitle(title)
                 .setContentText(text)
                 .setPriority(priority)
                 .setOngoing(onGoing)
+                .setChannelId(channelId)
                 .build()
         }
 
