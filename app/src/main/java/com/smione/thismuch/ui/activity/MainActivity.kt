@@ -12,8 +12,8 @@ import com.smione.thismuch.R
 import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
 import com.smione.thismuch.model.repository.RoomAccessLogRepository
 import com.smione.thismuch.service.TimeNotificationService
+import com.smione.thismuch.ui.accessLogList.AccessLogListViewModel
 import com.smione.thismuch.ui.activitycontract.MainActivityContract
-import com.smione.thismuch.ui.fragment.AccessLogListFragment
 import com.smione.thismuch.ui.fragment.MainFragment
 
 interface ServiceConnectionCallback {
@@ -57,9 +57,9 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
     override fun replaceFragmentToAccessLogListFragment() {
         Log.v("MainActivity", "replaceFragmentToAccessListFragment")
         val fragment =
-            AccessLogListFragment.newInstance(accessLogRepository, timeNotificationService)
+            AccessLogListViewModel.newInstance(accessLogRepository, timeNotificationService)
         supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment, fragment, AccessLogListFragment.TAG)
+            .replace(R.id.fragment, fragment, AccessLogListViewModel.TAG)
             .commit()
     }
 
