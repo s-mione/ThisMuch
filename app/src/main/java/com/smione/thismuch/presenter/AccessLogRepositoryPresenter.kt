@@ -3,8 +3,8 @@ package com.smione.thismuch.presenter
 import android.util.Log
 import com.smione.thismuch.contract.AccessLogRepositoryContract
 import com.smione.thismuch.model.converter.AccessLogListElementAccessLogEntityConverter
+import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
-import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch

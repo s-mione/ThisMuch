@@ -1,4 +1,4 @@
-package com.smione.thismuch.ui.fragment.recyclerview
+package com.smione.thismuch.model.element
 
 import java.time.Instant
 

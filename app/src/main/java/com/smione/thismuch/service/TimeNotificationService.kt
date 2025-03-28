@@ -11,12 +11,12 @@ import android.util.Log
 import com.smione.thismuch.contract.AccessLogRepositoryContract
 import com.smione.thismuch.listener.receiver.ScreenLockBroadcastReceiver
 import com.smione.thismuch.listener.receiver.ScreenUnlockBroadcastReceiver
+import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.RoomAccessLogRepository
 import com.smione.thismuch.presenter.AccessLogRepositoryPresenter
 import com.smione.thismuch.presenter.RuntimeDispatcherProvider
 import com.smione.thismuch.receivercontract.ScreenLockBroadcastReceiverContract
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
-import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 import com.smione.thismuch.utils.notification.TimeNotificationUtils
 import java.time.Instant
 import java.time.ZoneId

@@ -1,6 +1,6 @@
 package com.smione.thismuch.contract
 
-import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
+import com.smione.thismuch.model.element.AccessLogListElement
 
 interface AccessLogRepositoryContract {
     interface View {
