@@ -1,4 +1,4 @@
-package com.smione.thismuch.ui.fragment
+package com.smione.thismuch.ui.accessLogList
 
 import android.content.Context
 import android.os.Bundle
@@ -6,32 +6,38 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import com.smione.thismuch.contract.AccessLogRepositoryContract
-import com.smione.thismuch.databinding.FragmentAccessListBinding
 import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
 import com.smione.thismuch.presenter.AccessLogRepositoryPresenter
 import com.smione.thismuch.presenter.RuntimeDispatcherProvider
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
 import com.smione.thismuch.service.TimeNotificationService
 import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
-import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListRecyclerViewAdapter
 import com.smione.thismuch.utils.init.MainActivityUtils
 
-class AccessLogListFragment(private val accessLogRepository: AccessLogRepositoryInterface,
-                            private val timeNotificationService: TimeNotificationService) :
+class AccessLogListViewModel(private val accessLogRepository: AccessLogRepositoryInterface,
+                             private val timeNotificationService: TimeNotificationService) :
     Fragment(), ScreenUnlockBroadcastReceiverContract, AccessLogRepositoryContract.View {
 
     private lateinit var context: Context
-    private lateinit var binding: FragmentAccessListBinding
 
     private lateinit var presenter: AccessLogRepositoryContract.Presenter
 
+    private var uiState by mutableStateOf(AccessLogListUiState())
+
     companion object {
         const val TAG = "AccessListFragment"
-        fun newInstance(accessRepository: AccessLogRepositoryInterface,
-                        timeNotificationService: TimeNotificationService): AccessLogListFragment =
-            AccessLogListFragment(accessRepository, timeNotificationService)
+        fun newInstance(
+            accessRepository: AccessLogRepositoryInterface,
+            timeNotificationService: TimeNotificationService
+        ): AccessLogListViewModel =
+            AccessLogListViewModel(accessRepository, timeNotificationService)
     }
 
     override fun onAttach(context: Context) {
@@ -49,8 +55,12 @@ class AccessLogListFragment(private val accessLogRepository: AccessLogRepository
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
-        binding = FragmentAccessListBinding.inflate(inflater, container, false)
-        return binding.root
+        return ComposeView(requireContext()).apply {
+            setViewCompositionStrategy(ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed)
+            setContent {
+                AccessLogListScreen(uiState, onDeleteAll = { deleteAll() })
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -64,10 +74,8 @@ class AccessLogListFragment(private val accessLogRepository: AccessLogRepository
         )
 
         val headers = presenter.getHeaders()
-        presenter.getAccessLogList()
-        binding.rvList.adapter = AccessLogListRecyclerViewAdapter(headers, emptyList())
-
-        binding.fabDeleteAll.setOnClickListener { deleteAll() }
+        uiState = uiState.copy(isLoading = true, headers = headers)
+        presenter.getAccessLogListIndexedByTimeDesc()
     }
 
     private fun deleteAll() {
@@ -76,19 +84,15 @@ class AccessLogListFragment(private val accessLogRepository: AccessLogRepository
 
     override fun onScreenUnlock() {
         Log.v(TAG, "onScreenUnlock")
-        presenter.getAccessLogList()
+        uiState = uiState.copy(isLoading = true)
+        presenter.getAccessLogListIndexedByTimeDesc()
     }
 
     override fun onGetAccessLogList(accessLogList: List<AccessLogListElement>) {
-        (binding.rvList.adapter as AccessLogListRecyclerViewAdapter).updateValues(
-            accessLogList,
-            binding.rvList
-        )
+        uiState = uiState.copy(isLoading = false, accessLogList = accessLogList)
     }
 
     override fun onDeleteAll() {
-        (binding.rvList.adapter as AccessLogListRecyclerViewAdapter).deleteAll(
-            binding.rvList
-        )
+        uiState = uiState.copy(accessLogList = emptyList())
     }
 }
