@@ -1,6 +1,6 @@
 package com.smione.thismuch.ui.accessLogList
 
-import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
+import com.smione.thismuch.model.element.AccessLogListElement
 
 data class AccessLogListUiState(
     val isLoading: Boolean = false,

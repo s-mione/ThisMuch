@@ -13,12 +13,12 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import com.smione.thismuch.contract.AccessLogRepositoryContract
+import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
 import com.smione.thismuch.presenter.AccessLogRepositoryPresenter
 import com.smione.thismuch.presenter.RuntimeDispatcherProvider
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
 import com.smione.thismuch.service.TimeNotificationService
-import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 import com.smione.thismuch.utils.init.MainActivityUtils
 
 class AccessLogListViewModel(private val accessLogRepository: AccessLogRepositoryInterface,

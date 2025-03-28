@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.smione.thismuch.R
-import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
+import com.smione.thismuch.model.element.AccessLogListElement
 
 @Composable
 fun AccessLogListScreen(uiState: AccessLogListUiState, onDeleteAll: () -> Unit) {
