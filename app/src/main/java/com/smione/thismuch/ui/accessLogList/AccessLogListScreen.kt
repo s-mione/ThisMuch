@@ -73,8 +73,8 @@ fun ListAccessLogElementList(accessLogElement: AccessLogListElement,
                              modifier: Modifier = Modifier) {
     Row(modifier.fillMaxWidth()) {
         Text(text = accessLogElement.index.toString(), Modifier.weight(1f))
-        Text(text = accessLogElement.timeOn.toString(), Modifier.weight(1f))
-        Text(text = accessLogElement.timeOff.toString(), Modifier.weight(1f))
-        Text(text = accessLogElement.totalTime.toString(), Modifier.weight(1f))
+        Text(text = accessLogElement.formattedTimeOn(), Modifier.weight(1f))
+        Text(text = accessLogElement.formattedTimeOff(), Modifier.weight(1f))
+        Text(text = accessLogElement.formattedTotalTime(), Modifier.weight(1f))
     }
 }
