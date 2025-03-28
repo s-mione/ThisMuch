@@ -28,13 +28,14 @@ class AccessLogRepositoryPresenter(
         return accessLogRepository.getHeaders()
     }
 
-    override fun getAccessLogList() {
+    override fun getAccessLogListIndexedByTimeDesc() {
         launch {
             val accessLogEntityList = accessLogRepository.getAccessLogListSortedByTimeDesc()
             var index = accessLogEntityList.size
             val accessLogElementList = accessLogEntityList.map {
-                AccessLogListElementAccessLogEntityConverter.fromAccessEntityToAccessListElement(
-                    index--,it)
+                AccessLogListElementAccessLogEntityConverter.fromAccessEntityToAccessListElementWithIndex(
+                    index--, it
+                )
             }
             view?.onGetAccessLogList(accessLogElementList)
             Log.v("RoomAccessLogRepository", "getAccessList: $accessLogElementList")

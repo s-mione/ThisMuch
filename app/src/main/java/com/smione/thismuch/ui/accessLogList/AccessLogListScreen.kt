@@ -14,6 +14,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import com.smione.thismuch.R
 import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 
 @Composable
@@ -21,7 +23,10 @@ fun AccessLogListScreen(uiState: AccessLogListUiState, onDeleteAll: () -> Unit) 
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(onClick = { onDeleteAll() }) {
-                Icon(Icons.Filled.Delete, contentDescription = "Delete All")
+                Icon(
+                    Icons.Filled.Delete,
+                    contentDescription = stringResource(R.string.floating_button_delete_all_content_description)
+                )
             }
         }
     ) { paddingValues ->
@@ -32,9 +37,9 @@ fun AccessLogListScreen(uiState: AccessLogListUiState, onDeleteAll: () -> Unit) 
 @Composable
 private fun AccessLogListContent(uiState: AccessLogListUiState, paddingValues: PaddingValues) {
     if (uiState.isLoading) {
-        Text(text = "Loading...")
+        Text(text = stringResource(R.string.list_loading))
     } else if (uiState.error != null) {
-        Text(text = "Error: ${uiState.error}")
+        Text(text = "${stringResource(R.string.list_error)}: ${uiState.error}")
     } else {
         ListAccessLogList(uiState)
     }

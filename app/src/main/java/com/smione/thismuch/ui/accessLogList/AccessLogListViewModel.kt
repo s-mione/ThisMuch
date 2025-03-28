@@ -75,7 +75,7 @@ class AccessLogListViewModel(private val accessLogRepository: AccessLogRepositor
 
         val headers = presenter.getHeaders()
         uiState = uiState.copy(isLoading = true, headers = headers)
-        presenter.getAccessLogList()
+        presenter.getAccessLogListIndexedByTimeDesc()
     }
 
     private fun deleteAll() {
@@ -85,7 +85,7 @@ class AccessLogListViewModel(private val accessLogRepository: AccessLogRepositor
     override fun onScreenUnlock() {
         Log.v(TAG, "onScreenUnlock")
         uiState = uiState.copy(isLoading = true)
-        presenter.getAccessLogList()
+        presenter.getAccessLogListIndexedByTimeDesc()
     }
 
     override fun onGetAccessLogList(accessLogList: List<AccessLogListElement>) {

@@ -12,7 +12,7 @@ interface AccessLogRepositoryContract {
         fun bindView(view: View)
 
         fun getHeaders(): List<String>
-        fun getAccessLogList()
+        fun getAccessLogListIndexedByTimeDesc()
         fun saveAccessLogElement(element: AccessLogListElement)
         fun deleteAll()
     }

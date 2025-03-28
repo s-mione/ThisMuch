@@ -19,8 +19,12 @@ class AccessLogListElementAccessLogEntityConverter {
             )
         }
 
-        fun fromAccessEntityToAccessListElement(index: Int,
-                                                accessEntry: AccessLogEntity): AccessLogListElement {
+        fun fromAccessEntityToAccessListElement(accessEntry: AccessLogEntity): AccessLogListElement {
+            return fromAccessEntityToAccessListElementWithIndex(accessEntry.id, accessEntry)
+        }
+
+        fun fromAccessEntityToAccessListElementWithIndex(index: Int?,
+                                                         accessEntry: AccessLogEntity): AccessLogListElement {
             return AccessLogListElement(
                 index,
                 accessEntry.timeOn?.let { InstantStringConverter.fromStringToInstant(it) },
