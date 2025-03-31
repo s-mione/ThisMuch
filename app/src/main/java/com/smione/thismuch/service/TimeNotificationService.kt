@@ -18,6 +18,7 @@ import com.smione.thismuch.presenter.RuntimeDispatcherProvider
 import com.smione.thismuch.receivercontract.ScreenLockBroadcastReceiverContract
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
 import com.smione.thismuch.utils.notification.TimeNotificationUtils
+import java.time.Duration
 import java.time.Instant
 import java.time.ZoneId
 
@@ -87,8 +88,13 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
         this.saveAccessLogEntityIfFilled()
     }
 
-    private fun calculateTotalTime(timeOn: Instant, timeOff: Instant): Instant {
-        return timeOff.minusSeconds(timeOn.epochSecond)
+    private fun calculateTotalTime(timeOn: Instant, timeOff: Instant): Duration {
+        val duration = Duration.between(timeOn, timeOff)
+        Log.v(
+            "TimeNotificationService",
+            "calculateTotalTime: timeOn $timeOn, timeOff $timeOff, duration $duration"
+        )
+        return duration
     }
 
     private fun saveAccessLogEntityIfFilled(resetAlsoIfNotSaved: Boolean = false) {

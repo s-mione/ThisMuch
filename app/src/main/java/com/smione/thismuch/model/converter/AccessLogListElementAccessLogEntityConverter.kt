@@ -4,17 +4,19 @@ import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.entity.AccessLogEntity
 
 class AccessLogListElementAccessLogEntityConverter {
+
     companion object {
+
         fun fromAccessListElementToAccessEntity(accessLogListElement: AccessLogListElement?): AccessLogEntity {
             return AccessLogEntity(
                 timeOn = accessLogListElement?.timeOn?.let {
-                    InstantStringConverter.fromInstantToString(it)
+                    InstantDurationStringConverter.fromInstantToString(it)
                 },
                 timeOff = accessLogListElement?.timeOff?.let {
-                    InstantStringConverter.fromInstantToString(it)
+                    InstantDurationStringConverter.fromInstantToString(it)
                 },
                 totalTime = accessLogListElement?.totalTime?.let {
-                    InstantStringConverter.fromInstantToString(it)
+                    InstantDurationStringConverter.fromDurationToString(it)
                 }
             )
         }
@@ -27,9 +29,9 @@ class AccessLogListElementAccessLogEntityConverter {
                                                          accessEntry: AccessLogEntity): AccessLogListElement {
             return AccessLogListElement(
                 index,
-                accessEntry.timeOn?.let { InstantStringConverter.fromStringToInstant(it) },
-                accessEntry.timeOff?.let { InstantStringConverter.fromStringToInstant(it) },
-                accessEntry.totalTime?.let { InstantStringConverter.fromStringToInstant(it) },
+                accessEntry.timeOn?.let { InstantDurationStringConverter.fromStringToInstant(it) },
+                accessEntry.timeOff?.let { InstantDurationStringConverter.fromStringToInstant(it) },
+                accessEntry.totalTime?.let { InstantDurationStringConverter.fromStringToDuration(it) },
             )
         }
     }
