@@ -51,7 +51,6 @@ class AccessLogListViewModel(private val accessLogRepository: AccessLogRepositor
 
         presenter = AccessLogRepositoryPresenter(RuntimeDispatcherProvider(), accessLogRepository)
         presenter.bindView(this)
-        presenter.deleteAll()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
