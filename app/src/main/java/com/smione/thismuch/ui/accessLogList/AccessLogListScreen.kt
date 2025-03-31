@@ -16,6 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.smione.thismuch.R
+import com.smione.thismuch.model.converter.InstantDurationStringConverter
 import com.smione.thismuch.model.element.AccessLogListElement
 
 @Composable
@@ -73,8 +74,17 @@ fun ListAccessLogElementList(accessLogElement: AccessLogListElement,
                              modifier: Modifier = Modifier) {
     Row(modifier.fillMaxWidth()) {
         Text(text = accessLogElement.index.toString(), Modifier.weight(1f))
-        Text(text = accessLogElement.timeOn.toString(), Modifier.weight(1f))
-        Text(text = accessLogElement.timeOff.toString(), Modifier.weight(1f))
-        Text(text = accessLogElement.totalTime.toString(), Modifier.weight(1f))
+        Text(
+            text = InstantDurationStringConverter.fromInstantToFormattedString(accessLogElement.timeOn),
+            Modifier.weight(1f)
+        )
+        Text(
+            text = InstantDurationStringConverter.fromInstantToFormattedString(accessLogElement.timeOff),
+            Modifier.weight(1f)
+        )
+        Text(
+            text = InstantDurationStringConverter.fromDurationToFormattedString(accessLogElement.totalTime),
+            Modifier.weight(1f)
+        )
     }
 }
