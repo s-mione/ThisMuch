@@ -17,6 +17,7 @@ import com.smione.thismuch.presenter.AccessLogRepositoryPresenter
 import com.smione.thismuch.presenter.RuntimeDispatcherProvider
 import com.smione.thismuch.receivercontract.ScreenLockBroadcastReceiverContract
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
+import com.smione.thismuch.utils.notification.DefaultNotificationChannelFactory
 import com.smione.thismuch.utils.notification.TimeNotificationUtils
 import java.time.Duration
 import java.time.Instant
@@ -125,7 +126,10 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
         val hour = time.atZone(ZoneId.systemDefault()).hour
         val minute = time.atZone(ZoneId.systemDefault()).minute
         Log.v("TimeNotificationService", "buildNotification: at time [${hour}:${minute}]")
-        return TimeNotificationUtils.createNotificationForTime(this, hour, minute)
+        return TimeNotificationUtils.createNotificationForTime(
+            this,
+            DefaultNotificationChannelFactory(), hour, minute
+        )
     }
 
     private fun setTemporaryAccessLogListElementValuesWhenUnlock() {

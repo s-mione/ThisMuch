@@ -2,8 +2,6 @@ package com.smione.thismuch.utils.notification
 
 import android.Manifest
 import android.app.Notification
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
@@ -12,12 +10,9 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 
-open class NotificationUtils {
+class NotificationUtils {
 
     companion object {
-
-        const val DEFAULT_CHANNEL_ID = "1"
-        const val IMPORTANCE_DEFAULT = NotificationManager.IMPORTANCE_DEFAULT
 
         fun sendNotification(context: Context, fragment: Fragment, notificationId: Int,
                              notification: Notification) {
@@ -27,28 +22,21 @@ open class NotificationUtils {
             }
         }
 
-        fun createNotification(context: Context, channelId: String, iconId: Int, title: String,
-                               text: String, priority: Int,
+        fun createNotification(context: Context,
+                               channelFactory: NotificationChannelFactory,
+                               iconId: Int,
+                               title: String,
+                               text: String,
                                onGoing: Boolean = false): Notification {
-            this.createNotificationChannel(context, channelId, title, text, priority)
-            return NotificationCompat.Builder(context, channelId)
+            channelFactory.createNotificationChannel(context, title, text)
+            return NotificationCompat.Builder(context, channelFactory.defaultChannelId())
                 .setSmallIcon(iconId)
                 .setContentTitle(title)
                 .setContentText(text)
-                .setPriority(priority)
+                .setPriority(channelFactory.defaultImportance())
                 .setOngoing(onGoing)
-                .setChannelId(channelId)
+                .setChannelId(channelFactory.defaultChannelId())
                 .build()
-        }
-
-        fun createNotificationChannel(context: Context, channelId: String, channelName: String,
-                                      channelDescription: String, importance: Int) {
-            val channel = NotificationChannel(channelId, channelName, importance).apply {
-                description = channelDescription
-            }
-            val notificationManager: NotificationManager =
-                context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-            notificationManager.createNotificationChannel(channel)
         }
 
         private fun checkForPermission(context: Context, fragment: Fragment) {
