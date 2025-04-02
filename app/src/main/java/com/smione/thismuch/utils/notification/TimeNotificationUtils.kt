@@ -2,25 +2,34 @@ package com.smione.thismuch.utils.notification
 
 import android.app.Notification
 import android.content.Context
-import androidx.core.app.NotificationCompat
 import androidx.fragment.app.Fragment
 import com.smione.thismuch.R
 
-class TimeNotificationUtils : NotificationUtils() {
+class TimeNotificationUtils {
 
     companion object {
         private const val TIME_NOTIFICATION_ID = 1
-        fun sendNotificationForTime(context: Context, fragment: Fragment, hours: Int,
+        fun sendNotificationForTime(context: Context,
+                                    channelFactory: NotificationChannelFactory,
+                                    fragment: Fragment,
+                                    hours: Int,
                                     minutes: Int) {
-            val notification = createNotificationForTime(context, hours, minutes)
-            sendNotification(context, fragment, TIME_NOTIFICATION_ID, notification)
+            val notification = createNotificationForTime(context, channelFactory, hours, minutes)
+            NotificationUtils.sendNotification(
+                context,
+                fragment,
+                TIME_NOTIFICATION_ID,
+                notification
+            )
         }
 
-        fun createNotificationForTime(context: Context, hours: Int, minutes: Int): Notification {
-            return createNotification(
-                context, DEFAULT_CHANNEL_ID, getIconResource(hours, minutes),
-                "Display on at:", "It's ${getFormattedTime(hours, minutes)}",
-                NotificationCompat.PRIORITY_DEFAULT, true
+        fun createNotificationForTime(context: Context,
+                                      channelFactory: NotificationChannelFactory,
+                                      hours: Int,
+                                      minutes: Int): Notification {
+            return NotificationUtils.createNotification(
+                context, channelFactory, getIconResource(hours, minutes),
+                "Display on at:", "It's ${getFormattedTime(hours, minutes)}", true
             )
         }
 
