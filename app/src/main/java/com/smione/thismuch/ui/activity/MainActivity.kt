@@ -1,12 +1,10 @@
 package com.smione.thismuch.ui.activity
 
 import android.content.ComponentName
-import android.content.Context
 import android.content.Intent
 import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import com.smione.thismuch.R
 import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
@@ -15,6 +13,7 @@ import com.smione.thismuch.service.TimeNotificationService
 import com.smione.thismuch.ui.accessLogList.AccessLogListViewModel
 import com.smione.thismuch.ui.activitycontract.MainActivityContract
 import com.smione.thismuch.ui.fragment.MainFragment
+import timber.log.Timber
 
 interface ServiceConnectionCallback {
     fun onServiceConnected()
@@ -30,12 +29,12 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
     private var serviceConnectionCallback: ServiceConnectionCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.v("MainActivity", "onCreate")
+        Timber.v("MainActivity onCreate")
         super.onCreate(savedInstanceState)
         accessLogRepository = RoomAccessLogRepository(this)
 
         Intent(this, TimeNotificationService::class.java).also { intent ->
-            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+            bindService(intent, connection, BIND_AUTO_CREATE)
         }
 
         setContentView(R.layout.activity_main)
@@ -55,7 +54,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
     }
 
     override fun replaceFragmentToAccessLogListFragment() {
-        Log.v("MainActivity", "replaceFragmentToAccessListFragment")
+        Timber.v("MainActivity replaceFragmentToAccessListFragment")
         val fragment =
             AccessLogListViewModel.newInstance(accessLogRepository, timeNotificationService)
         supportFragmentManager.beginTransaction()
@@ -64,7 +63,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
     }
 
     override fun replaceFragmentToMainFragment() {
-        Log.v("MainActivity", "replaceFragmentToMainFragment")
+        Timber.v("MainActivity replaceFragmentToMainFragment")
         val fragment = MainFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment, fragment, MainFragment.TAG)
@@ -73,7 +72,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
 
     private val connection = object : ServiceConnection {
         override fun onServiceConnected(className: ComponentName, service: IBinder) {
-            Log.v("MainActivity", "onServiceConnected")
+            Timber.v("MainActivity onServiceConnected")
             val binder = service as TimeNotificationService.LocalBinder
             timeNotificationService = binder.getService()
             isBound = true
