@@ -1,6 +1,5 @@
 package com.smione.thismuch.presenter
 
-import android.util.Log
 import com.smione.thismuch.contract.AccessLogRepositoryContract
 import com.smione.thismuch.model.converter.AccessLogListElementAccessLogEntityConverter
 import com.smione.thismuch.model.element.AccessLogListElement
@@ -8,6 +7,7 @@ import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 class AccessLogRepositoryPresenter(
@@ -38,12 +38,12 @@ class AccessLogRepositoryPresenter(
                 )
             }
             view?.onGetAccessLogList(accessLogElementList)
-            Log.v("RoomAccessLogRepository", "getAccessList: $accessLogElementList")
+            Timber.v("RoomAccessLogRepository getAccessList: $accessLogElementList")
         }
     }
 
     override fun saveAccessLogElement(element: AccessLogListElement) {
-        Log.v("RoomAccessLogRepository", "saving element: $element")
+        Timber.v("RoomAccessLogRepository saving element: $element")
         launch {
             val accessEntity = AccessLogListElementAccessLogEntityConverter
                 .fromAccessListElementToAccessEntity(element)
@@ -52,7 +52,7 @@ class AccessLogRepositoryPresenter(
     }
 
     override fun deleteAll() {
-        Log.v("RoomAccessLogRepository", "delete all")
+        Timber.v("RoomAccessLogRepository delete all")
         launch {
             accessLogRepository.deleteAll()
             view?.onDeleteAll()

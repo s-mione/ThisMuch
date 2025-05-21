@@ -2,7 +2,6 @@ package com.smione.thismuch.ui.accessLogList
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +19,7 @@ import com.smione.thismuch.presenter.RuntimeDispatcherProvider
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
 import com.smione.thismuch.service.TimeNotificationService
 import com.smione.thismuch.utils.init.MainActivityUtils
+import timber.log.Timber
 
 class AccessLogListViewModel(private val accessLogRepository: AccessLogRepositoryInterface,
                              private val timeNotificationService: TimeNotificationService) :
@@ -83,7 +83,7 @@ class AccessLogListViewModel(private val accessLogRepository: AccessLogRepositor
     }
 
     override fun onScreenUnlock() {
-        Log.v(TAG, "onScreenUnlock")
+        Timber.v("$TAG onScreenUnlock")
         uiState = uiState.copy(isLoading = true)
         presenter.getAccessLogListIndexedByTimeDesc()
     }
