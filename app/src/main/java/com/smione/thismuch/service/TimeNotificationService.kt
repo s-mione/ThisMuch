@@ -13,6 +13,7 @@ import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.RoomAccessLogRepository
 import com.smione.thismuch.presenter.AccessLogRepositoryPresenter
 import com.smione.thismuch.presenter.RuntimeDispatcherProvider
+import com.smione.thismuch.presenter.RuntimeScopeProvider
 import com.smione.thismuch.receivercontract.ScreenLockBroadcastReceiverContract
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
 import com.smione.thismuch.utils.notification.TimeNotificationUtils
@@ -48,7 +49,11 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
         super.onCreate()
 
         roomAccessLogRepositoryPresenter =
-            AccessLogRepositoryPresenter(RuntimeDispatcherProvider(), RoomAccessLogRepository(this))
+            AccessLogRepositoryPresenter(
+                RuntimeScopeProvider(),
+                RuntimeDispatcherProvider(),
+                RoomAccessLogRepository(this)
+            )
         roomAccessLogRepositoryPresenter.bindView(this)
 
         this.registerReceivers()

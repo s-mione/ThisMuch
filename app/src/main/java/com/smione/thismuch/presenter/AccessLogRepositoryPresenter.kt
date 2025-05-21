@@ -11,6 +11,7 @@ import timber.log.Timber
 import kotlin.coroutines.CoroutineContext
 
 class AccessLogRepositoryPresenter(
+    private val scopeProvider: ScopeProvider,
     private val dispatcherProvider: DispatcherProvider,
     private val accessLogRepository: AccessLogRepositoryInterface
 ) : CoroutineScope, AccessLogRepositoryContract.Presenter {
@@ -19,6 +20,9 @@ class AccessLogRepositoryPresenter(
 
     override val coroutineContext: CoroutineContext
         get() = SupervisorJob() + dispatcherProvider.io()
+
+    private val coroutineScope: CoroutineScope
+        get() = scopeProvider.supervisorJobProvider(dispatcherProvider.io())
 
     override fun bindView(view: AccessLogRepositoryContract.View) {
         this.view = view
@@ -29,7 +33,7 @@ class AccessLogRepositoryPresenter(
     }
 
     override fun getAccessLogListIndexedByTimeDesc() {
-        launch {
+        coroutineScope.launch {
             val accessLogEntityList = accessLogRepository.getAccessLogListSortedByTimeDesc()
             var index = accessLogEntityList.size
             val accessLogElementList = accessLogEntityList.map {
@@ -44,7 +48,7 @@ class AccessLogRepositoryPresenter(
 
     override fun saveAccessLogElement(element: AccessLogListElement) {
         Timber.v("RoomAccessLogRepository saving element: $element")
-        launch {
+        coroutineScope.launch {
             val accessEntity = AccessLogListElementAccessLogEntityConverter
                 .fromAccessListElementToAccessEntity(element)
             accessLogRepository.saveAccessLogEntity(accessEntity)
@@ -53,7 +57,7 @@ class AccessLogRepositoryPresenter(
 
     override fun deleteAll() {
         Timber.v("RoomAccessLogRepository delete all")
-        launch {
+        coroutineScope.launch {
             accessLogRepository.deleteAll()
             view?.onDeleteAll()
         }
