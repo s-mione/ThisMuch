@@ -16,6 +16,7 @@ import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
 import com.smione.thismuch.presenter.AccessLogRepositoryPresenter
 import com.smione.thismuch.presenter.RuntimeDispatcherProvider
+import com.smione.thismuch.presenter.RuntimeScopeProvider
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
 import com.smione.thismuch.service.TimeNotificationService
 import com.smione.thismuch.utils.init.MainActivityUtils
@@ -49,7 +50,11 @@ class AccessLogListViewModel(private val accessLogRepository: AccessLogRepositor
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = AccessLogRepositoryPresenter(RuntimeDispatcherProvider(), accessLogRepository)
+        presenter = AccessLogRepositoryPresenter(
+            RuntimeScopeProvider(),
+            RuntimeDispatcherProvider(),
+            accessLogRepository
+        )
         presenter.bindView(this)
     }
 
