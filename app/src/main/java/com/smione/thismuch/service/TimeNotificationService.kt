@@ -28,9 +28,41 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
     companion object {
         private const val NOTIFICATION_ID: Int = 1
 
-        private var temporaryAccessLogListElement: AccessLogListElement = AccessLogListElement()
+        private var temporaryTimeOn: Instant? = null
+        private var temporaryTimeOff: Instant? = null
+        private var temporaryTotalTime: Duration? = null
 
         var isRunning: Boolean = false
+
+
+        private fun resetTemporaryAccessLogListElementValues() {
+            Timber.d(
+                "TimeNotificationService saveAccessLogEntityIfFilled: resetting temporary element"
+            )
+            temporaryTimeOn = null
+            temporaryTimeOff = null
+            temporaryTotalTime = null
+        }
+
+        private fun convertTemporaryAccessLogListElementToObject(): AccessLogListElement? {
+            if (!checkIfTemporaryAccessLogEntityIsToSave()) {
+                Timber.d("TimeNotificationService convertTemporaryAccessLogListElementToObject: one of the temporary element is null timeOn: $temporaryTimeOn timeOff: $temporaryTimeOff totalTime:$temporaryTotalTime")
+                return null
+            }
+            return AccessLogListElement(
+                0,
+                temporaryTimeOn!!,
+                temporaryTimeOff!!,
+                temporaryTotalTime!!
+            )
+        }
+
+        private fun checkIfTemporaryAccessLogEntityIsToSave(): Boolean {
+            Timber.d(
+                "TimeNotificationService checkIfTemporaryAccessLogEntityIsToSave: temporary element timeOn: $temporaryTimeOn timeOff: $temporaryTimeOff totalTime:$temporaryTotalTime\""
+            )
+            return temporaryTimeOn != null && temporaryTimeOff != null && temporaryTotalTime != null
+        }
     }
 
     private lateinit var notification: Notification
@@ -101,24 +133,22 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
     }
 
     private fun saveAccessLogEntityIfFilled(resetAlsoIfNotSaved: Boolean = false) {
-        if (this.checkIfTemporaryAccessLogEntityIsToSave()) {
+        val accessLogListElement = convertTemporaryAccessLogListElementToObject()
+        accessLogListElement?.run {
             Timber.d(
-                "TimeNotificationService saveAccessLogEntityIfFilled: saving temporary element $temporaryAccessLogListElement"
+                "TimeNotificationService saveAccessLogEntityIfFilled: saving temporary element $accessLogListElement"
             )
-            this.roomAccessLogRepositoryPresenter.saveAccessLogElement(temporaryAccessLogListElement)
-            temporaryAccessLogListElement = AccessLogListElement()
-        } else {
-            if (resetAlsoIfNotSaved) {
-                temporaryAccessLogListElement = AccessLogListElement()
-            }
+            roomAccessLogRepositoryPresenter.saveAccessLogElement(this)
+            resetTemporaryAccessLogListElementValues()
         }
-    }
-
-    private fun checkIfTemporaryAccessLogEntityIsToSave(): Boolean {
-        Timber.d(
-            "TimeNotificationService checkIfTemporaryAccessLogEntityIsToSave: temporary element $temporaryAccessLogListElement"
-        )
-        return temporaryAccessLogListElement.timeOn != null && temporaryAccessLogListElement.timeOff != null && temporaryAccessLogListElement.totalTime != null
+            ?: run {
+                Timber.d(
+                    "TimeNotificationService saveAccessLogEntityIfFilled: not saving temporary element because it is null"
+                )
+                if (resetAlsoIfNotSaved) {
+                    resetTemporaryAccessLogListElementValues()
+                }
+            }
     }
 
     private fun buildNotification(): Notification {
@@ -130,16 +160,16 @@ class TimeNotificationService : Service(), ScreenUnlockBroadcastReceiverContract
     }
 
     private fun setTemporaryAccessLogListElementValuesWhenUnlock() {
-        temporaryAccessLogListElement.timeOn = Instant.now()
+        temporaryTimeOn = Instant.now()
     }
 
     private fun setTemporaryAccessLogListElementValuesWhenLock() {
-        if (temporaryAccessLogListElement.timeOn != null) {
-            temporaryAccessLogListElement.timeOff = Instant.now()
+        if (temporaryTimeOn != null) {
+            temporaryTimeOff = Instant.now()
 
-            temporaryAccessLogListElement.totalTime = this.calculateTotalTime(
-                temporaryAccessLogListElement.timeOn!!,
-                temporaryAccessLogListElement.timeOff!!
+            temporaryTotalTime = this.calculateTotalTime(
+                temporaryTimeOn!!,
+                temporaryTimeOff!!
             )
         }
     }

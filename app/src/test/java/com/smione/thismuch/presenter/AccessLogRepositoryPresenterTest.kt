@@ -1,11 +1,10 @@
 package com.smione.thismuch.presenter
 
+import com.smione.thismuch.InstantCommonTestHelper
 import com.smione.thismuch.contract.AccessLogRepositoryContract
 import com.smione.thismuch.model.converter.AccessLogListElementAccessLogEntityConverter
-import com.smione.thismuch.model.converter.InstantDurationStringConverter
 import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
-import com.smione.thismuch.model.repository.entity.AccessLogEntity
 import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -20,9 +19,6 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
 import timber.log.Timber
-import java.time.Duration
-import java.time.Instant
-import java.time.temporal.ChronoUnit
 
 class AccessLogRepositoryPresenterTest {
 
@@ -68,7 +64,12 @@ class AccessLogRepositoryPresenterTest {
     @Test
     fun `saveAccessLogElement triggers repository`() = testScope.runTest {
         val element =
-            AccessLogListElement(0, INSTANT_TIME_ON, INSTANT_TIME_OFF, TOTAL_TIME)
+            AccessLogListElement(
+                0,
+                InstantCommonTestHelper.INSTANT_TIME_ON,
+                InstantCommonTestHelper.INSTANT_TIME_OFF,
+                InstantCommonTestHelper.TOTAL_TIME
+            )
         val accessEntity =
             AccessLogListElementAccessLogEntityConverter.fromAccessListElementToAccessEntity(element)
 
@@ -96,8 +97,9 @@ class AccessLogRepositoryPresenterTest {
     @Test
     fun `getAccessLogListIndexedByTimeDesc returns with the right order`() =
         testScope.runTest {
-            val accessLogEntityList = getAccessLogEntityList()
-            val accessLogElementList = accessLogElementList(accessLogEntityList)
+            val accessLogEntityList = InstantCommonTestHelper.getAccessLogEntityList()
+            val accessLogElementList =
+                InstantCommonTestHelper.accessLogElementList(accessLogEntityList)
 
             coEvery { repository.getAccessLogListSortedByTimeDesc() } returns accessLogEntityList
 
@@ -107,41 +109,4 @@ class AccessLogRepositoryPresenterTest {
             coVerify { repository.getAccessLogListSortedByTimeDesc() }
             verify { view.onGetAccessLogList(accessLogElementList) }
         }
-
-
-    companion object {
-        private val INSTANT_TIME_ON = Instant.now().minus(3, ChronoUnit.HOURS)
-        private val INSTANT_TIME_OFF = Instant.now().minus(2, ChronoUnit.HOURS)
-
-        private val INSTANT_TIME_ON_LATER = Instant.now().minus(1, ChronoUnit.HOURS)
-        private val INSTANT_TIME_OFF_LATER = Instant.now()
-
-        private val TOTAL_TIME = Duration.ofHours(1)
-
-        private fun getAccessLogEntityList() = listOf(
-            AccessLogEntity(
-                InstantDurationStringConverter.fromInstantToString(
-                    INSTANT_TIME_ON_LATER
-                ),
-                InstantDurationStringConverter.fromInstantToString(INSTANT_TIME_OFF_LATER),
-                InstantDurationStringConverter.fromDurationToString(TOTAL_TIME),
-                1
-            ),
-            AccessLogEntity(
-                InstantDurationStringConverter.fromInstantToString(INSTANT_TIME_ON),
-                InstantDurationStringConverter.fromInstantToString(INSTANT_TIME_OFF),
-                InstantDurationStringConverter.fromDurationToString(TOTAL_TIME),
-                0
-            )
-        )
-
-        private fun accessLogElementList(accessLogEntityList: List<AccessLogEntity>): List<AccessLogListElement> {
-            var index = accessLogEntityList.size
-            return accessLogEntityList.map {
-                AccessLogListElementAccessLogEntityConverter.fromAccessEntityToAccessListElementWithIndex(
-                    index--, it
-                )
-            }
-        }
-    }
 }

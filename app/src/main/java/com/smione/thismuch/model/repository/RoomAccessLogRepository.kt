@@ -35,7 +35,7 @@ class RoomAccessLogRepository(val context: Context) : AccessLogRepositoryInterfa
     }
 }
 
-@Database(entities = [AccessLogEntity::class], version = 1)
+@Database(entities = [AccessLogEntity::class], version = 2)
 abstract class RoomAccessLogRepositoryDatabase : RoomDatabase() {
     abstract fun roomAccessLogDao(): RoomAccessLogDao
 
@@ -49,7 +49,9 @@ abstract class RoomAccessLogRepositoryDatabase : RoomDatabase() {
                     context.applicationContext,
                     RoomAccessLogRepositoryDatabase::class.java,
                     "AccessLogRepository"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration()
+                    .build()
                 dbSingleton = instance
                 instance
             }
