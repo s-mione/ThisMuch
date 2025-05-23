@@ -18,7 +18,7 @@ import com.smione.thismuch.presenter.AccessLogRepositoryPresenter
 import com.smione.thismuch.presenter.RuntimeDispatcherProvider
 import com.smione.thismuch.presenter.RuntimeScopeProvider
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
-import com.smione.thismuch.service.TimeNotificationService
+import com.smione.thismuch.service.timenotification.TimeNotificationService
 import com.smione.thismuch.utils.init.MainActivityUtils
 import timber.log.Timber
 

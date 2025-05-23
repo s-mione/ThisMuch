@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <service
-            android:name=".service.TimeNotificationService"
+            android:name=".service.timenotification.TimeNotificationService"
             android:foregroundServiceType="dataSync"
             android:exported="false" />
 
