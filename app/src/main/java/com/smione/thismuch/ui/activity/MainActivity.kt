@@ -15,6 +15,7 @@ import com.smione.thismuch.ui.activitycontract.MainActivityContract
 import com.smione.thismuch.ui.fragment.MainFragment
 import timber.log.Timber
 
+
 interface ServiceConnectionCallback {
     fun onServiceConnected()
 }
@@ -29,6 +30,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
     private var serviceConnectionCallback: ServiceConnectionCallback? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        Timber.plant(Timber.DebugTree())
         Timber.v("MainActivity onCreate")
         super.onCreate(savedInstanceState)
         accessLogRepository = RoomAccessLogRepository(this)
