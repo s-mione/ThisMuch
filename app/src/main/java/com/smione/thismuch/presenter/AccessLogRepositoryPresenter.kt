@@ -4,6 +4,7 @@ import com.smione.thismuch.contract.AccessLogRepositoryContract
 import com.smione.thismuch.model.converter.AccessLogListElementAccessLogEntityConverter
 import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
+import com.smione.thismuch.model.repository.entity.AccessLogEntity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
@@ -35,15 +36,24 @@ class AccessLogRepositoryPresenter(
     override fun getAccessLogListIndexedByTimeDesc() {
         coroutineScope.launch {
             val accessLogEntityList = accessLogRepository.getAccessLogListSortedByTimeDesc()
-            var index = accessLogEntityList.size
-            val accessLogElementList = accessLogEntityList.map {
-                AccessLogListElementAccessLogEntityConverter.fromAccessEntityToAccessListElementWithIndex(
-                    index--, it
-                )
-            }
+            val accessLogElementList = convertAccessLogEntityListToAccessLogElementList(
+                accessLogEntityList
+            )
             view?.onGetAccessLogList(accessLogElementList)
             Timber.v("RoomAccessLogRepository getAccessList: $accessLogElementList")
         }
+    }
+
+    private fun convertAccessLogEntityListToAccessLogElementList(
+        accessLogEntityList: List<AccessLogEntity>
+    ): List<AccessLogListElement> {
+        var index = accessLogEntityList.size
+        val accessLogElementList = accessLogEntityList.map {
+            AccessLogListElementAccessLogEntityConverter.fromAccessEntityToAccessListElementWithIndex(
+                index--, it
+            )
+        }
+        return accessLogElementList
     }
 
     override fun saveAccessLogElement(element: AccessLogListElement) {
