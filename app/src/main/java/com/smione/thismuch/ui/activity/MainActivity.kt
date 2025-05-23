@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.smione.thismuch.R
 import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
 import com.smione.thismuch.model.repository.RoomAccessLogRepository
-import com.smione.thismuch.service.TimeNotificationService
+import com.smione.thismuch.service.timenotification.TimeNotificationService
 import com.smione.thismuch.ui.accessLogList.AccessLogListViewModel
 import com.smione.thismuch.ui.activitycontract.MainActivityContract
 import com.smione.thismuch.ui.fragment.MainFragment

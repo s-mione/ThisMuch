@@ -2,7 +2,7 @@ package com.smione.thismuch.listener.receiver.handler
 
 import android.content.Context
 import android.content.Intent
-import com.smione.thismuch.service.TimeNotificationService
+import com.smione.thismuch.service.timenotification.TimeNotificationService
 
 class BootActionHandler : BootActionHandlerInterface {
 
