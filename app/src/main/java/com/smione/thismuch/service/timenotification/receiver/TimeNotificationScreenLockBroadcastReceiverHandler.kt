@@ -12,10 +12,11 @@ class TimeNotificationScreenLockBroadcastReceiverHandler :
 
 
     override fun onScreenLock(accessLogListElement: TemporaryAccessLogListElement,
-                              roomAccessLogRepositoryPresenter: AccessLogRepositoryContract.Presenter) {
+                              roomAccessLogRepositoryPresenter: AccessLogRepositoryContract.Presenter): TemporaryAccessLogListElement {
         Timber.Forest.v("TimeNotificationService onScreenLock")
         setTemporaryAccessLogListElementValuesWhenLock(accessLogListElement)
         this.saveAccessLogEntityIfFilled(accessLogListElement, roomAccessLogRepositoryPresenter)
+        return accessLogListElement
     }
 
     private fun saveAccessLogEntityIfFilled(temporaryAccessLogListElement: TemporaryAccessLogListElement,

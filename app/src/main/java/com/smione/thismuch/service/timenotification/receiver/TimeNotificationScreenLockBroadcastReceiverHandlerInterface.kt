@@ -12,6 +12,6 @@ interface TimeNotificationScreenLockBroadcastReceiverHandlerInterface {
     )
 
     fun onScreenLock(accessLogListElement: TemporaryAccessLogListElement,
-                     roomAccessLogRepositoryPresenter: AccessLogRepositoryContract.Presenter)
+                     roomAccessLogRepositoryPresenter: AccessLogRepositoryContract.Presenter): TemporaryAccessLogListElement
 
 }
