@@ -9,35 +9,34 @@ class InstantDurationStringConverter {
 
     companion object {
         private val formatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(ZoneId.systemDefault())
+            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(ZoneId.of("UTC"))
 
-        fun fromInstantToString(instant: Instant): String {
-            return instant.toString()
-        }
+        fun fromInstantToString(instant: Instant): String =
+            instant.toString()
 
-        fun fromStringToInstant(string: String): Instant {
-            return Instant.parse(string)
-        }
+        fun fromStringToInstant(string: String): Instant =
+            runCatching { Instant.parse(string) }
+                .getOrElse { throw IllegalArgumentException("Invalid String format: $string", it) }
 
-        fun fromInstantToFormattedString(instant: Instant?): String {
-            return formatter.format(instant)
-        }
+        fun fromInstantToFormattedString(instant: Instant?): String =
+            instant?.let { formatter.format(it) }
+                ?: throw IllegalArgumentException("Instant cannot be null")
 
-        fun fromDurationToString(duration: Duration): String {
-            return duration.toString()
-        }
+        fun fromDurationToString(duration: Duration): String =
+            duration.toString()
 
-        fun fromStringToDuration(string: String): Duration {
-            return Duration.parse(string)
-        }
+        fun fromStringToDuration(string: String): Duration =
+            runCatching { Duration.parse(string) }
+                .getOrElse {
+                    throw IllegalArgumentException("Invalid String format: $string", it)
+                }
 
-        fun fromDurationToFormattedString(duration: Duration?): String {
-            if (duration == null)
-                return "00:00"
-            val hours = duration.toHours()
-            val minutes = duration.toMinutes() % 60
-            val seconds = duration.seconds % 60
-            return String.format("%02d:%02d:%02d", hours, minutes, seconds)
-        }
+        fun fromDurationToFormattedString(duration: Duration?): String =
+            duration?.let {
+                val hours = duration.toHours()
+                val minutes = duration.toMinutes() % 60
+                val seconds = duration.seconds % 60
+                String.format("%02d:%02d:%02d", hours, minutes, seconds)
+            } ?: "00:00"
     }
 }
