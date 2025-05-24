@@ -18,13 +18,16 @@ import com.smione.thismuch.receivercontract.ScreenLockBroadcastReceiverContract
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
 import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenLockBroadcastReceiverHandler
 import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenLockBroadcastReceiverHandlerInterface
+import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenUnlockBroadcastReceiverHandler
+import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenUnlockBroadcastReceiverHandlerInterface
 import com.smione.thismuch.utils.notification.TimeNotificationUtils
 import timber.log.Timber
 import java.time.Instant
 import java.time.ZoneId
 
 class TimeNotificationService(val timeNotificationScreenLockBroadcastReceiverHandler:
-                              TimeNotificationScreenLockBroadcastReceiverHandlerInterface = TimeNotificationScreenLockBroadcastReceiverHandler()) :
+                              TimeNotificationScreenLockBroadcastReceiverHandlerInterface = TimeNotificationScreenLockBroadcastReceiverHandler(),
+                              val timeNotificationScreenUnlockBroadcastReceiverHandler: TimeNotificationScreenUnlockBroadcastReceiverHandlerInterface = TimeNotificationScreenUnlockBroadcastReceiverHandler()) :
     Service(), ScreenUnlockBroadcastReceiverContract,
     ScreenLockBroadcastReceiverContract, AccessLogRepositoryContract.View {
 
@@ -39,36 +42,6 @@ class TimeNotificationService(val timeNotificationScreenLockBroadcastReceiverHan
             )
 
         var isRunning: Boolean = false
-
-
-        private fun resetTemporaryAccessLogListElementValues() {
-            Timber.Forest.d(
-                "TimeNotificationService saveAccessLogEntityIfFilled: resetting temporary element"
-            )
-            temporaryAccessLogListElement.timeOn = null
-            temporaryAccessLogListElement.timeOff = null
-            temporaryAccessLogListElement.totalTime = null
-        }
-
-        private fun convertTemporaryAccessLogListElementToObject(): AccessLogListElement? {
-            if (!checkIfTemporaryAccessLogEntityIsToSave()) {
-                Timber.Forest.d("TimeNotificationService convertTemporaryAccessLogListElementToObject: one of the temporary element is null timeOn: $temporaryAccessLogListElement.timeOn timeOff: $temporaryAccessLogListElement.timeOff totalTime:$temporaryAccessLogListElement.totalTime")
-                return null
-            }
-            return AccessLogListElement(
-                0,
-                temporaryAccessLogListElement.timeOn!!,
-                temporaryAccessLogListElement.timeOff!!,
-                temporaryAccessLogListElement.totalTime!!
-            )
-        }
-
-        private fun checkIfTemporaryAccessLogEntityIsToSave(): Boolean {
-            Timber.Forest.d(
-                "TimeNotificationService checkIfTemporaryAccessLogEntityIsToSave: temporary element timeOn: $temporaryAccessLogListElement.timeOn timeOff: $temporaryAccessLogListElement.timeOff totalTime:$temporaryAccessLogListElement.totalTime\""
-            )
-            return temporaryAccessLogListElement.timeOn != null && temporaryAccessLogListElement.timeOff != null && temporaryAccessLogListElement.totalTime != null
-        }
     }
 
     private lateinit var notification: Notification
@@ -117,11 +90,12 @@ class TimeNotificationService(val timeNotificationScreenLockBroadcastReceiverHan
     override fun onScreenUnlock() {
         Timber.Forest.v("TimeNotificationService onScreenUnlock")
         this.notifyUnlockReceivers()
-
         this.createAndShowNotification()
 
-        this.saveAccessLogEntityIfFilled()
-        setTemporaryAccessLogListElementValuesWhenUnlock()
+        this.timeNotificationScreenUnlockBroadcastReceiverHandler.onScreenUnlock(
+            temporaryAccessLogListElement,
+            roomAccessLogRepositoryPresenter
+        )
     }
 
     override fun onScreenLock() {
@@ -131,33 +105,12 @@ class TimeNotificationService(val timeNotificationScreenLockBroadcastReceiverHan
         )
     }
 
-    private fun saveAccessLogEntityIfFilled() {
-        val accessLogListElement = convertTemporaryAccessLogListElementToObject()
-        accessLogListElement?.run {
-            Timber.Forest.d(
-                "TimeNotificationService saveAccessLogEntityIfFilled: saving temporary element $accessLogListElement"
-            )
-            roomAccessLogRepositoryPresenter.saveAccessLogElement(this)
-            resetTemporaryAccessLogListElementValues()
-        }
-            ?: run {
-                Timber.Forest.d(
-                    "TimeNotificationService saveAccessLogEntityIfFilled: not saving temporary element because it is null"
-                )
-                resetTemporaryAccessLogListElementValues()
-            }
-    }
-
     private fun buildNotification(): Notification {
         val time: Instant = Instant.now()
         val hour = time.atZone(ZoneId.systemDefault()).hour
         val minute = time.atZone(ZoneId.systemDefault()).minute
         Timber.Forest.v("TimeNotificationService buildNotification: at time [${hour}:${minute}]")
         return TimeNotificationUtils.Companion.createNotificationForTime(this, hour, minute)
-    }
-
-    private fun setTemporaryAccessLogListElementValuesWhenUnlock() {
-        temporaryAccessLogListElement.timeOn = Instant.now()
     }
 
     private fun createAndShowNotification() {
