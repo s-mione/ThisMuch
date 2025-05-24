@@ -12,6 +12,8 @@ composeBom = "2025.03.00"
 appcompat = "1.7.0"
 constraintlayout = "2.2.1"
 legacySupportV4 = "1.0.0"
+mockitoAndroid = "5.11.0"
+mockitoCore = "5.14.2"
 mockk = "1.13.8"
 recyclerview = "1.4.0"
 roomCommon = "2.6.1"
@@ -49,6 +51,7 @@ androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = 
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinxCoroutinesTest" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 firebase-inappmessaging = { group = "com.google.firebase", name = "firebase-inappmessaging", version.ref = "firebaseInappmessaging" }
+mockito-android = { module = "org.mockito:mockito-android", version.ref = "mockitoAndroid" }
 mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 
