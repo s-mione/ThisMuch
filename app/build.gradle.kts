@@ -89,6 +89,7 @@ dependencies {
 
     androidTestImplementation(libs.androidx.espresso.intents)
     androidTestImplementation(libs.mockito.android)
+    androidTestImplementation(libs.assertj.core)
 
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
