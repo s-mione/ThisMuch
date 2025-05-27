@@ -6,7 +6,7 @@ import com.smione.thismuch.model.repository.accesslog.database.entity.AccessLogE
 class RoomAccessLogRepository(databaseProvider: AccessLogDatabaseProvider) :
     AccessLogRepositoryInterface {
 
-    val database = databaseProvider.main()
+    private val database = databaseProvider.main()
 
     override fun getHeaders(): List<String> {
         return listOf("No.", "Time On", "Time Off", "Total Time")
