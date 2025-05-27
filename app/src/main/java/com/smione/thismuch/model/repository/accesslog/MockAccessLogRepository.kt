@@ -1,6 +1,6 @@
-package com.smione.thismuch.model.repository
+package com.smione.thismuch.model.repository.accesslog
 
-import com.smione.thismuch.model.repository.entity.AccessLogEntity
+import com.smione.thismuch.model.repository.accesslog.entity.AccessLogEntity
 
 class MockAccessLogRepository() : AccessLogRepositoryInterface {
 
