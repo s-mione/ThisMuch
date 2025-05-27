@@ -1,4 +1,4 @@
-package com.smione.thismuch.model.repository.entity
+package com.smione.thismuch.model.repository.accesslog.database.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

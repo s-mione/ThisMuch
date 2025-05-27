@@ -7,8 +7,9 @@ import android.os.Bundle
 import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
 import com.smione.thismuch.R
-import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
-import com.smione.thismuch.model.repository.RoomAccessLogRepository
+import com.smione.thismuch.model.repository.accesslog.AccessLogRepositoryInterface
+import com.smione.thismuch.model.repository.accesslog.RoomAccessLogRepository
+import com.smione.thismuch.model.repository.accesslog.database.RoomAccessLogDatabaseProvider
 import com.smione.thismuch.service.timenotification.TimeNotificationService
 import com.smione.thismuch.ui.accessLogList.AccessLogListViewModel
 import com.smione.thismuch.ui.activitycontract.MainActivityContract
@@ -33,7 +34,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
         Timber.plant(Timber.DebugTree())
         Timber.v("MainActivity onCreate")
         super.onCreate(savedInstanceState)
-        accessLogRepository = RoomAccessLogRepository(this)
+        accessLogRepository = RoomAccessLogRepository(RoomAccessLogDatabaseProvider(this))
 
         Intent(this, TimeNotificationService::class.java).also { intent ->
             bindService(intent, connection, BIND_AUTO_CREATE)

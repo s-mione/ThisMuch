@@ -90,6 +90,9 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.intents)
     androidTestImplementation(libs.mockito.android)
 
+    androidTestImplementation(libs.androidx.room.testing)
+    androidTestImplementation(libs.androidx.runner)
+
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }
