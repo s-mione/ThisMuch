@@ -89,7 +89,6 @@ dependencies {
 
     androidTestImplementation(libs.androidx.espresso.intents)
     androidTestImplementation(libs.mockito.android)
-    androidTestImplementation(libs.assertj.core)
 
     androidTestImplementation(libs.androidx.room.testing)
     androidTestImplementation(libs.androidx.runner)
