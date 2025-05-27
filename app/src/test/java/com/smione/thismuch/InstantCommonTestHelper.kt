@@ -3,7 +3,7 @@ package com.smione.thismuch
 import com.smione.thismuch.model.converter.AccessLogListElementAccessLogEntityConverter
 import com.smione.thismuch.model.converter.InstantDurationStringConverter
 import com.smione.thismuch.model.element.AccessLogListElement
-import com.smione.thismuch.model.repository.entity.AccessLogEntity
+import com.smione.thismuch.model.repository.accesslog.database.entity.AccessLogEntity
 import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
