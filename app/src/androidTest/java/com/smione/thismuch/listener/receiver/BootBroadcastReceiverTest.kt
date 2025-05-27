@@ -1,8 +1,9 @@
+package com.smione.thismuch.listener.receiver
+
 import android.content.Context
 import android.content.Intent
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.smione.thismuch.listener.receiver.BootBroadcastReceiver
 import com.smione.thismuch.listener.receiver.handler.BootActionHandlerInterface
 import junit.framework.TestCase.assertTrue
 import org.junit.Test
