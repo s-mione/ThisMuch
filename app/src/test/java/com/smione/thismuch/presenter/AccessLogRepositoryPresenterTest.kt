@@ -4,7 +4,7 @@ import com.smione.thismuch.InstantCommonTestHelper
 import com.smione.thismuch.contract.AccessLogRepositoryContract
 import com.smione.thismuch.model.converter.AccessLogListElementAccessLogEntityConverter
 import com.smione.thismuch.model.element.AccessLogListElement
-import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
+import com.smione.thismuch.model.repository.accesslog.AccessLogRepositoryInterface
 import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.coEvery

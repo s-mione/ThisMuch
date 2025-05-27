@@ -13,7 +13,7 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import com.smione.thismuch.contract.AccessLogRepositoryContract
 import com.smione.thismuch.model.element.AccessLogListElement
-import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
+import com.smione.thismuch.model.repository.accesslog.AccessLogRepositoryInterface
 import com.smione.thismuch.presenter.AccessLogRepositoryPresenter
 import com.smione.thismuch.presenter.RuntimeDispatcherProvider
 import com.smione.thismuch.presenter.RuntimeScopeProvider
