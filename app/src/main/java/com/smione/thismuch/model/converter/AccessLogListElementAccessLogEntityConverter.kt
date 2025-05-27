@@ -1,7 +1,7 @@
 package com.smione.thismuch.model.converter
 
 import com.smione.thismuch.model.element.AccessLogListElement
-import com.smione.thismuch.model.repository.accesslog.entity.AccessLogEntity
+import com.smione.thismuch.model.repository.accesslog.database.entity.AccessLogEntity
 
 class AccessLogListElementAccessLogEntityConverter {
 

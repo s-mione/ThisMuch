@@ -1,10 +1,10 @@
-package com.smione.thismuch.model.repository.accesslog
+package com.smione.thismuch.model.repository.accesslog.database
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
-import com.smione.thismuch.model.repository.accesslog.entity.AccessLogEntity
+import com.smione.thismuch.model.repository.accesslog.database.entity.AccessLogEntity
 
 @Dao
 interface AccessLogDatabaseInterface {

@@ -1,6 +1,7 @@
 package com.smione.thismuch.model.repository.accesslog
 
-import com.smione.thismuch.model.repository.accesslog.entity.AccessLogEntity
+import com.smione.thismuch.model.repository.accesslog.database.AccessLogDatabaseProvider
+import com.smione.thismuch.model.repository.accesslog.database.entity.AccessLogEntity
 
 class RoomAccessLogRepository(databaseProvider: AccessLogDatabaseProvider) :
     AccessLogRepositoryInterface {

@@ -1,4 +1,4 @@
-package com.smione.thismuch.model.repository.accesslog
+package com.smione.thismuch.model.repository.accesslog.database
 
 import android.content.Context
 import androidx.room.Room
