@@ -9,14 +9,14 @@ interface AccessLogDatabaseProvider {
         internal var dbSingleton: AccessLogDatabaseInterface? = null
     }
 
-    fun main(): AccessLogDatabaseInterface
+    fun main(applicationContext: Context): AccessLogDatabaseInterface
 }
 
-class RoomAccessLogDatabaseProvider(val context: Context) : AccessLogDatabaseProvider {
-    override fun main(): AccessLogDatabaseInterface {
+class RoomAccessLogDatabaseProvider() : AccessLogDatabaseProvider {
+    override fun main(applicationContext: Context): AccessLogDatabaseInterface {
         return AccessLogDatabaseProvider.dbSingleton ?: synchronized(this) {
             val instance = Room.databaseBuilder(
-                this.context.applicationContext,
+                applicationContext,
                 RoomAccessLogDatabase::class.java,
                 "AccessLogRepository"
             )

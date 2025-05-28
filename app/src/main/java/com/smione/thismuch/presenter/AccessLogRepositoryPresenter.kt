@@ -25,6 +25,9 @@ class AccessLogRepositoryPresenter(
     private val coroutineScope: CoroutineScope
         get() = scopeProvider.supervisorJobProvider(dispatcherProvider.io())
 
+    override val getAccessLogRepository: AccessLogRepositoryInterface
+        get() = accessLogRepository
+
     override fun bindView(view: AccessLogRepositoryContract.View) {
         this.view = view
     }

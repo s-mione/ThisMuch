@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
         Timber.plant(Timber.DebugTree())
         Timber.v("MainActivity onCreate")
         super.onCreate(savedInstanceState)
-        accessLogRepository = RoomAccessLogRepository(RoomAccessLogDatabaseProvider(this))
+        accessLogRepository = RoomAccessLogRepository(RoomAccessLogDatabaseProvider())
 
         Intent(this, TimeNotificationService::class.java).also { intent ->
             bindService(intent, connection, BIND_AUTO_CREATE)

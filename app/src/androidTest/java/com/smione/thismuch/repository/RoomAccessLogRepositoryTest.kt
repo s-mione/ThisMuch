@@ -1,5 +1,6 @@
 package com.smione.thismuch.repository
 
+import android.content.Context
 import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
@@ -10,11 +11,14 @@ import com.smione.thismuch.model.repository.accesslog.database.AccessLogDatabase
 import com.smione.thismuch.model.repository.accesslog.database.RoomAccessLogDatabase
 import com.smione.thismuch.model.repository.accesslog.database.entity.AccessLogEntity
 import kotlinx.coroutines.runBlocking
+import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import timber.log.Timber
 import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -22,11 +26,13 @@ import java.time.temporal.ChronoUnit
 @RunWith(AndroidJUnit4::class)
 class RoomAccessLogRepositoryTest {
 
+    private val logMessages = mutableListOf<String>()
+
     private lateinit var repository: RoomAccessLogRepository
 
     private val accessLogDatabaseProvider = object : AccessLogDatabaseProvider {
-        override fun main() = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
+        override fun main(applicationContext: Context) = Room.inMemoryDatabaseBuilder(
+            applicationContext,
             RoomAccessLogDatabase::class.java
         ).allowMainThreadQueries().build().roomAccessLogDao()
     }
@@ -73,12 +79,25 @@ class RoomAccessLogRepositoryTest {
     @Before
     fun setup() {
         repository = RoomAccessLogRepository(accessLogDatabaseProvider)
+
+        Timber.plant(object : Timber.DebugTree() {
+            override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
+                logMessages.add(message)
+            }
+        })
+    }
+
+    @After
+    fun tearDown() {
+        Timber.uprootAll()
     }
 
     @Test
     fun testSaveAndRetrieveAccessLog() = runBlocking {
         val accessLogEntityOne = getAccessLogEntityOne()
         val accessLogEntityTwo = getAccessLogEntityTwo()
+
+        repository.initDatabase(ApplicationProvider.getApplicationContext())
 
         repository.saveAccessLogEntity(accessLogEntityOne)
         repository.saveAccessLogEntity(accessLogEntityTwo)
@@ -95,6 +114,8 @@ class RoomAccessLogRepositoryTest {
     fun testSaveTwoEntitiesWithTheSameIdReturnsError() {
         val accessLogEntityOne = getAccessLogEntityOne()
 
+        repository.initDatabase(ApplicationProvider.getApplicationContext())
+
         val result = assertThrows(SQLiteConstraintException::class.java) {
             runBlocking {
                 repository.saveAccessLogEntity(accessLogEntityOne)
@@ -108,6 +129,8 @@ class RoomAccessLogRepositoryTest {
         val accessLogEntityOne = getAccessLogEntityOne()
         val accessLogEntityTwo = getAccessLogEntityTwo()
         val accessLogEntityThree = getAccessLogEntityThree()
+
+        repository.initDatabase(ApplicationProvider.getApplicationContext())
 
         repository.saveAccessLogEntity(accessLogEntityThree)
         repository.saveAccessLogEntity(accessLogEntityOne)
@@ -127,6 +150,8 @@ class RoomAccessLogRepositoryTest {
         val accessLogEntityTwo = getAccessLogEntityTwo()
         val accessLogEntityThree = getAccessLogEntityThree()
 
+        repository.initDatabase(ApplicationProvider.getApplicationContext())
+
         repository.saveAccessLogEntity(accessLogEntityOne)
         repository.saveAccessLogEntity(accessLogEntityTwo)
         repository.saveAccessLogEntity(accessLogEntityThree)
@@ -135,5 +160,37 @@ class RoomAccessLogRepositoryTest {
 
         val logs = repository.getAccessLogList()
         assertEquals(0, logs.size)
+    }
+
+    @Test
+    fun testSaveAccessLogEntityWithoutInitializeIt() = runBlocking {
+        val accessLogEntityOne = getAccessLogEntityOne()
+
+        repository.saveAccessLogEntity(accessLogEntityOne)
+
+        assertTrue(logMessages.contains("RoomAccessLogRepository database is not initialized"))
+    }
+
+    @Test
+    fun testGetAccessLogListWithoutInitializeIt() = runBlocking {
+        val result = repository.getAccessLogList()
+
+        assertTrue(result.isEmpty())
+        assertTrue(logMessages.contains("RoomAccessLogRepository database is not initialized"))
+    }
+
+    @Test
+    fun testGetAccessLogListSortedByTimeDescWithoutInitializeIt() = runBlocking {
+        val result = repository.getAccessLogListSortedByTimeDesc()
+
+        assertTrue(result.isEmpty())
+        assertTrue(logMessages.contains("RoomAccessLogRepository database is not initialized"))
+    }
+
+    @Test
+    fun testDeleteAllWithoutInitializeIt() = runBlocking {
+        repository.deleteAll()
+
+        assertTrue(logMessages.contains("RoomAccessLogRepository database is not initialized"))
     }
 }

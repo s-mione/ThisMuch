@@ -1,30 +1,52 @@
 package com.smione.thismuch.model.repository.accesslog
 
+import android.content.Context
+import com.smione.thismuch.model.repository.accesslog.database.AccessLogDatabaseInterface
 import com.smione.thismuch.model.repository.accesslog.database.AccessLogDatabaseProvider
 import com.smione.thismuch.model.repository.accesslog.database.entity.AccessLogEntity
+import timber.log.Timber
 
-class RoomAccessLogRepository(databaseProvider: AccessLogDatabaseProvider) :
+class RoomAccessLogRepository(val databaseProvider: AccessLogDatabaseProvider) :
     AccessLogRepositoryInterface {
 
-    private val database = databaseProvider.main()
+    private var database: AccessLogDatabaseInterface? = null
+
+    override fun initDatabase(applicationContext: Context) {
+        Timber.v("RoomAccessLogRepository initDatabase")
+        this.database = this.databaseProvider.main(applicationContext)
+    }
 
     override fun getHeaders(): List<String> {
         return listOf("No.", "Time On", "Time Off", "Total Time")
     }
 
     override suspend fun saveAccessLogEntity(element: AccessLogEntity) {
-        database.insertAll(element)
+        database?.insertAll(element) ?: run {
+            logDatabaseIsNotInitialized()
+        }
     }
 
-    override suspend fun getAccessLogList(): List<AccessLogEntity> {
-        return database.getAll()
-    }
+    override suspend fun getAccessLogList(): List<AccessLogEntity> =
+        database?.getAll()
+            ?: run {
+                logDatabaseIsNotInitialized()
+                emptyList()
+            }
 
-    override suspend fun getAccessLogListSortedByTimeDesc(): List<AccessLogEntity> {
-        return database.getAllSortedByTimeDesc()
-    }
+    override suspend fun getAccessLogListSortedByTimeDesc(): List<AccessLogEntity> =
+        database?.getAllSortedByTimeDesc()
+            ?: run {
+                logDatabaseIsNotInitialized()
+                emptyList()
+            }
 
     override suspend fun deleteAll() {
-        database.deleteAll()
+        database?.deleteAll() ?: run {
+            logDatabaseIsNotInitialized()
+        }
+    }
+
+    private fun logDatabaseIsNotInitialized() {
+        Timber.d("RoomAccessLogRepository database is not initialized")
     }
 }
