@@ -2,7 +2,6 @@ package com.smione.thismuch.service.timenotification.receiver
 
 import com.smione.thismuch.InstantCommonTestHelper
 import com.smione.thismuch.contract.AccessLogRepositoryContract
-import com.smione.thismuch.model.element.AccessLogListElement
 import io.mockk.called
 import io.mockk.every
 import io.mockk.mockk
@@ -13,8 +12,10 @@ class TimeNotificationReceiverHelperTest {
 
     @Test
     fun testSaveAccessLogEntityIfFilled() {
-        val temporaryAccessLogListElement = getTemporaryAccessLogListElement()
-        val accessLogListElement = getAccessLogListElement()
+        val temporaryAccessLogListElement =
+            InstantCommonTestHelper.getTemporaryAccessLogListElement()
+        val accessLogListElement = InstantCommonTestHelper.getAccessLogListElement()
+
         val roomAccessLogRepositoryPresenter = mockk<AccessLogRepositoryContract.Presenter>()
 
         every { roomAccessLogRepositoryPresenter.saveAccessLogElement(any()) } returns Unit
@@ -29,7 +30,8 @@ class TimeNotificationReceiverHelperTest {
 
     @Test
     fun testSaveAccessLogEntityIfFilledWithTimeOnNull() {
-        val temporaryAccessLogListElement = getTemporaryAccessLogListElement()
+        val temporaryAccessLogListElement =
+            InstantCommonTestHelper.getTemporaryAccessLogListElement()
         temporaryAccessLogListElement.timeOn = null
         val roomAccessLogRepositoryPresenter = mockk<AccessLogRepositoryContract.Presenter>()
 
@@ -44,7 +46,8 @@ class TimeNotificationReceiverHelperTest {
 
     @Test
     fun testSaveAccessLogEntityIfFilledWithTimeOffNull() {
-        val temporaryAccessLogListElement = getTemporaryAccessLogListElement()
+        val temporaryAccessLogListElement =
+            InstantCommonTestHelper.getTemporaryAccessLogListElement()
         temporaryAccessLogListElement.timeOff = null
         val roomAccessLogRepositoryPresenter = mockk<AccessLogRepositoryContract.Presenter>()
 
@@ -59,7 +62,8 @@ class TimeNotificationReceiverHelperTest {
 
     @Test
     fun testSaveAccessLogEntityIfFilledWithTotalTimeNull() {
-        val temporaryAccessLogListElement = getTemporaryAccessLogListElement()
+        val temporaryAccessLogListElement =
+            InstantCommonTestHelper.getTemporaryAccessLogListElement()
         temporaryAccessLogListElement.totalTime = null
         val roomAccessLogRepositoryPresenter = mockk<AccessLogRepositoryContract.Presenter>()
 
@@ -71,19 +75,4 @@ class TimeNotificationReceiverHelperTest {
 
         verify { roomAccessLogRepositoryPresenter wasNot called }
     }
-
-    private fun getTemporaryAccessLogListElement() =
-        TimeNotificationScreenLockBroadcastReceiverHandlerInterface.TemporaryAccessLogListElement(
-            InstantCommonTestHelper.INSTANT_TIME_ON,
-            InstantCommonTestHelper.INSTANT_TIME_OFF,
-            InstantCommonTestHelper.TOTAL_TIME
-        )
-
-    private fun getAccessLogListElement() =
-        AccessLogListElement(
-            0,
-            InstantCommonTestHelper.INSTANT_TIME_ON,
-            InstantCommonTestHelper.INSTANT_TIME_OFF,
-            InstantCommonTestHelper.TOTAL_TIME
-        )
 }
