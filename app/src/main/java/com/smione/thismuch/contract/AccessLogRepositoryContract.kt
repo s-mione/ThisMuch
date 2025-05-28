@@ -1,6 +1,7 @@
 package com.smione.thismuch.contract
 
 import com.smione.thismuch.model.element.AccessLogListElement
+import com.smione.thismuch.model.repository.accesslog.AccessLogRepositoryInterface
 
 interface AccessLogRepositoryContract {
     interface View {
@@ -9,6 +10,7 @@ interface AccessLogRepositoryContract {
     }
 
     interface Presenter {
+        val getAccessLogRepository: AccessLogRepositoryInterface
         fun bindView(view: View)
 
         fun getHeaders(): List<String>

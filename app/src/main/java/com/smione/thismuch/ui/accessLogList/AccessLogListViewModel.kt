@@ -53,7 +53,7 @@ class AccessLogListViewModel(private val accessLogRepository: AccessLogRepositor
         presenter = AccessLogRepositoryPresenter(
             RuntimeScopeProvider(),
             RuntimeDispatcherProvider(),
-            accessLogRepository
+            accessLogRepository.apply { this.initDatabase(context.applicationContext) }
         )
         presenter.bindView(this)
     }

@@ -28,7 +28,12 @@ import java.time.ZoneId
 
 class TimeNotificationService(val timeNotificationScreenLockBroadcastReceiverHandler:
                               TimeNotificationScreenLockBroadcastReceiverHandlerInterface = TimeNotificationScreenLockBroadcastReceiverHandler(),
-                              val timeNotificationScreenUnlockBroadcastReceiverHandler: TimeNotificationScreenUnlockBroadcastReceiverHandlerInterface = TimeNotificationScreenUnlockBroadcastReceiverHandler()) :
+                              val timeNotificationScreenUnlockBroadcastReceiverHandler: TimeNotificationScreenUnlockBroadcastReceiverHandlerInterface = TimeNotificationScreenUnlockBroadcastReceiverHandler(),
+                              val roomAccessLogRepositoryPresenter: AccessLogRepositoryContract.Presenter = AccessLogRepositoryPresenter(
+                                  RuntimeScopeProvider(),
+                                  RuntimeDispatcherProvider(),
+                                  RoomAccessLogRepository(RoomAccessLogDatabaseProvider())
+                              )) :
     Service(), ScreenUnlockBroadcastReceiverContract,
     ScreenLockBroadcastReceiverContract, AccessLogRepositoryContract.View {
 
@@ -49,8 +54,6 @@ class TimeNotificationService(val timeNotificationScreenLockBroadcastReceiverHan
     private lateinit var screenUnlockBroadcastReceiver: ScreenUnlockBroadcastReceiver
     private lateinit var screenLockBroadcastReceiver: ScreenLockBroadcastReceiver
 
-    private lateinit var roomAccessLogRepositoryPresenter: AccessLogRepositoryContract.Presenter
-
     private val unlockReceiverSubscribers: MutableList<ScreenUnlockBroadcastReceiverContract> =
         mutableListOf()
 
@@ -60,12 +63,7 @@ class TimeNotificationService(val timeNotificationScreenLockBroadcastReceiverHan
         Timber.Forest.v("TimeNotificationService onCreate")
         super.onCreate()
 
-        roomAccessLogRepositoryPresenter =
-            AccessLogRepositoryPresenter(
-                RuntimeScopeProvider(),
-                RuntimeDispatcherProvider(),
-                RoomAccessLogRepository(RoomAccessLogDatabaseProvider(this))
-            )
+        roomAccessLogRepositoryPresenter.getAccessLogRepository.initDatabase(applicationContext)
         roomAccessLogRepositoryPresenter.bindView(this)
 
         this.registerReceivers()
