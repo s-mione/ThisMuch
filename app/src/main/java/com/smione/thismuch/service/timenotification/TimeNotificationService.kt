@@ -1,7 +1,6 @@
 package com.smione.thismuch.service.timenotification
 
 import android.app.Notification
-import android.app.NotificationManager
 import android.app.Service
 import android.content.Intent
 import android.os.Binder
@@ -12,6 +11,8 @@ import com.smione.thismuch.listener.receiver.ScreenUnlockBroadcastReceiver
 import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.accesslog.RoomAccessLogRepository
 import com.smione.thismuch.model.repository.accesslog.database.RoomAccessLogDatabaseProvider
+import com.smione.thismuch.notification.time.NotificationTimeCreate
+import com.smione.thismuch.notification.time.NotificationTimeShow
 import com.smione.thismuch.presenter.AccessLogRepositoryPresenter
 import com.smione.thismuch.presenter.RuntimeDispatcherProvider
 import com.smione.thismuch.presenter.RuntimeScopeProvider
@@ -21,7 +22,6 @@ import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScr
 import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenLockBroadcastReceiverHandlerInterface
 import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenUnlockBroadcastReceiverHandler
 import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenUnlockBroadcastReceiverHandlerInterface
-import com.smione.thismuch.utils.notification.TimeNotificationUtils
 import timber.log.Timber
 import java.time.Instant
 import java.time.ZoneId
@@ -33,7 +33,9 @@ class TimeNotificationService(val timeNotificationScreenLockBroadcastReceiverHan
                                   RuntimeScopeProvider(),
                                   RuntimeDispatcherProvider(),
                                   RoomAccessLogRepository(RoomAccessLogDatabaseProvider())
-                              )) :
+                              ),
+                              val notificationTimeShow: NotificationTimeShow = NotificationTimeShow(),
+                              val notificationTimeCreate: NotificationTimeCreate = NotificationTimeCreate()) :
     Service(), ScreenUnlockBroadcastReceiverContract,
     ScreenLockBroadcastReceiverContract, AccessLogRepositoryContract.View {
 
@@ -109,14 +111,12 @@ class TimeNotificationService(val timeNotificationScreenLockBroadcastReceiverHan
         val hour = time.atZone(ZoneId.systemDefault()).hour
         val minute = time.atZone(ZoneId.systemDefault()).minute
         Timber.Forest.v("TimeNotificationService buildNotification: at time [${hour}:${minute}]")
-        return TimeNotificationUtils.Companion.createNotificationForTime(this, hour, minute)
+        return notificationTimeCreate.createNotification(this, hour, minute)
     }
 
     private fun createAndShowNotification() {
         notification = buildNotification()
-        val notificationManager: NotificationManager =
-            getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        notificationManager.notify(NOTIFICATION_ID, notification)
+        notificationTimeShow.showNotification(NOTIFICATION_ID, notification, this)
     }
 
     private fun notifyUnlockReceivers() {
