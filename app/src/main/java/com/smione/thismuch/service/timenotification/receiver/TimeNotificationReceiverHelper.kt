@@ -5,22 +5,9 @@ import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenLockBroadcastReceiverHandlerInterface.TemporaryAccessLogListElement
 import timber.log.Timber
 
-class TimeNotificationReceiverTestHelper {
+class TimeNotificationReceiverHelper {
 
     companion object {
-        fun convertTemporaryAccessLogListElementToObject(accessLogListElement: TemporaryAccessLogListElement): AccessLogListElement? {
-            if (!checkIfTemporaryAccessLogEntityIsToSave(accessLogListElement)) {
-                Timber.Forest.d("TimeNotificationService convertTemporaryAccessLogListElementToObject: one of the temporary element is null timeOn: $accessLogListElement.timeOn timeOff: $accessLogListElement.timeOff totalTime: $accessLogListElement.totalTime")
-                return null
-            }
-            return AccessLogListElement(
-                0,
-                accessLogListElement.timeOn!!,
-                accessLogListElement.timeOff!!,
-                accessLogListElement.totalTime!!
-            )
-        }
-
         fun saveAccessLogEntityIfFilled(temporaryAccessLogListElement: TemporaryAccessLogListElement,
                                         roomAccessLogRepositoryPresenter: AccessLogRepositoryContract.Presenter,
                                         resetAlsoIfNotSaved: Boolean = false) {
@@ -43,6 +30,19 @@ class TimeNotificationReceiverTestHelper {
                         resetTemporaryAccessLogListElementValues(temporaryAccessLogListElement)
                     }
                 }
+        }
+
+        private fun convertTemporaryAccessLogListElementToObject(accessLogListElement: TemporaryAccessLogListElement): AccessLogListElement? {
+            if (!checkIfTemporaryAccessLogEntityIsToSave(accessLogListElement)) {
+                Timber.Forest.d("TimeNotificationService convertTemporaryAccessLogListElementToObject: one of the temporary element is null timeOn: $accessLogListElement.timeOn timeOff: $accessLogListElement.timeOff totalTime: $accessLogListElement.totalTime")
+                return null
+            }
+            return AccessLogListElement(
+                0,
+                accessLogListElement.timeOn!!,
+                accessLogListElement.timeOff!!,
+                accessLogListElement.totalTime!!
+            )
         }
 
         private fun checkIfTemporaryAccessLogEntityIsToSave(accessLogListElement: TemporaryAccessLogListElement): Boolean {

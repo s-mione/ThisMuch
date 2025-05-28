@@ -14,7 +14,7 @@ class TimeNotificationScreenLockBroadcastReceiverHandler :
                               roomAccessLogRepositoryPresenter: AccessLogRepositoryContract.Presenter): TemporaryAccessLogListElement {
         Timber.Forest.v("TimeNotificationService onScreenLock")
         setTemporaryAccessLogListElementValuesWhenLock(accessLogListElement)
-        TimeNotificationReceiverTestHelper.saveAccessLogEntityIfFilled(
+        TimeNotificationReceiverHelper.saveAccessLogEntityIfFilled(
             accessLogListElement,
             roomAccessLogRepositoryPresenter
         )

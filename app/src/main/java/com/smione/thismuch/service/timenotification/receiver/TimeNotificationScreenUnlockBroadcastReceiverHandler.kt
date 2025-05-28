@@ -12,7 +12,7 @@ class TimeNotificationScreenUnlockBroadcastReceiverHandler :
                                 roomAccessLogRepositoryPresenter: AccessLogRepositoryContract.Presenter) {
         Timber.Forest.v("TimeNotificationService onScreenUnlock")
 
-        TimeNotificationReceiverTestHelper.saveAccessLogEntityIfFilled(
+        TimeNotificationReceiverHelper.saveAccessLogEntityIfFilled(
             temporaryAccessLogListElement,
             roomAccessLogRepositoryPresenter,
             true
