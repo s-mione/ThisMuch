@@ -4,6 +4,7 @@ import com.smione.thismuch.model.converter.AccessLogListElementAccessLogEntityCo
 import com.smione.thismuch.model.converter.InstantDurationStringConverter
 import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.accesslog.database.entity.AccessLogEntity
+import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenLockBroadcastReceiverHandlerInterface.TemporaryAccessLogListElement
 import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -48,6 +49,9 @@ class InstantCommonTestHelper {
         fun getAccessLogListElement(): AccessLogListElement =
             AccessLogListElement(0, INSTANT_TIME_ON, INSTANT_TIME_OFF, TOTAL_TIME)
 
+        fun getTemporaryAccessLogListElement(): TemporaryAccessLogListElement =
+            buildTemporaryAccessLogListElement(INSTANT_TIME_ON, INSTANT_TIME_OFF, TOTAL_TIME)
+
         fun getAccessLogEntity(): AccessLogEntity =
             AccessLogEntity(
                 InstantDurationStringConverter.fromInstantToString(INSTANT_TIME_ON),
@@ -55,6 +59,11 @@ class InstantCommonTestHelper {
                 InstantDurationStringConverter.fromDurationToString(TOTAL_TIME),
                 1
             )
+
+        fun buildTemporaryAccessLogListElement(timeOn: Instant?,
+                                               timeOff: Instant?,
+                                               totalTime: Duration?) =
+            TemporaryAccessLogListElement(timeOn, timeOff, totalTime)
     }
 
 }

@@ -10,25 +10,25 @@ class TimeNotificationScreenLockBroadcastReceiverHandler :
     TimeNotificationScreenLockBroadcastReceiverHandlerInterface {
 
 
-    override fun onScreenLock(accessLogListElement: TemporaryAccessLogListElement,
+    override fun onScreenLock(temporaryAccessLogListElement: TemporaryAccessLogListElement,
                               roomAccessLogRepositoryPresenter: AccessLogRepositoryContract.Presenter): TemporaryAccessLogListElement {
         Timber.Forest.v("TimeNotificationService onScreenLock")
-        setTemporaryAccessLogListElementValuesWhenLock(accessLogListElement)
+        setTemporaryAccessLogListElementValuesWhenLock(temporaryAccessLogListElement)
         TimeNotificationReceiverHelper.saveAccessLogEntityIfFilled(
-            accessLogListElement,
+            temporaryAccessLogListElement,
             roomAccessLogRepositoryPresenter
         )
-        return accessLogListElement
+        return temporaryAccessLogListElement
     }
 
 
-    private fun setTemporaryAccessLogListElementValuesWhenLock(accessLogListElement: TemporaryAccessLogListElement) {
-        if (accessLogListElement.timeOn != null) {
-            accessLogListElement.timeOff = Instant.now()
+    private fun setTemporaryAccessLogListElementValuesWhenLock(temporaryAccessLogListElement: TemporaryAccessLogListElement) {
+        if (temporaryAccessLogListElement.timeOn != null) {
+            temporaryAccessLogListElement.timeOff = Instant.now()
 
-            accessLogListElement.totalTime = this.calculateTotalTime(
-                accessLogListElement.timeOn,
-                accessLogListElement.timeOff
+            temporaryAccessLogListElement.totalTime = this.calculateTotalTime(
+                temporaryAccessLogListElement.timeOn,
+                temporaryAccessLogListElement.timeOff
             )
         }
     }
