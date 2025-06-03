@@ -6,6 +6,7 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.smione.thismuch.R
 import com.smione.thismuch.model.repository.accesslog.AccessLogRepositoryInterface
 import com.smione.thismuch.model.repository.accesslog.RoomAccessLogRepository
@@ -30,6 +31,8 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
 
     private var serviceConnectionCallback: ServiceConnectionCallback? = null
 
+    private var currentScreen = R.id.menuAccessLogList
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.plant(Timber.DebugTree())
         Timber.v("MainActivity onCreate")
@@ -45,6 +48,17 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
             override fun onServiceConnected() {
                 replaceFragmentToAccessLogListFragment()
             }
+        }
+
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
+
+        bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.menuAccessLogList -> {
+                    if (currentScreen != R.id.menuAccessLogList) replaceFragmentToAccessLogListFragment()
+                }
+            }
+            true
         }
     }
 
