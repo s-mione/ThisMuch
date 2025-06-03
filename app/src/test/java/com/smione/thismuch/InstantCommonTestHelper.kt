@@ -2,9 +2,9 @@ package com.smione.thismuch
 
 import com.smione.thismuch.model.converter.AccessLogListElementAccessLogEntityConverter
 import com.smione.thismuch.model.converter.InstantDurationStringConverter
-import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.accesslog.database.entity.AccessLogEntity
 import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenLockBroadcastReceiverHandlerInterface.TemporaryAccessLogListElement
+import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 import java.time.Duration
 import java.time.Instant
 import java.time.temporal.ChronoUnit

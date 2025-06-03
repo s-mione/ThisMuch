@@ -3,8 +3,8 @@ package com.smione.thismuch.presenter
 import com.smione.thismuch.InstantCommonTestHelper
 import com.smione.thismuch.contract.AccessLogRepositoryContract
 import com.smione.thismuch.model.converter.AccessLogListElementAccessLogEntityConverter
-import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.accesslog.AccessLogRepositoryInterface
+import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.coEvery
@@ -87,7 +87,7 @@ class AccessLogRepositoryPresenterTest {
 
             coEvery { repository.getAccessLogListSortedByTimeDesc() } returns emptyList()
 
-            presenter.getAccessLogListIndexedByTimeDesc()
+            presenter.getAccessLogList()
             testScheduler.advanceUntilIdle()
 
             coVerify { repository.getAccessLogListSortedByTimeDesc() }
@@ -103,7 +103,7 @@ class AccessLogRepositoryPresenterTest {
 
             coEvery { repository.getAccessLogListSortedByTimeDesc() } returns accessLogEntityList
 
-            presenter.getAccessLogListIndexedByTimeDesc()
+            presenter.getAccessLogList()
             testScheduler.advanceUntilIdle()
 
             coVerify { repository.getAccessLogListSortedByTimeDesc() }

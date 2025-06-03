@@ -1,7 +1,5 @@
 <resources>
     <string name="app_name">ThisMuch</string>
     <string name="textview_placeholder_main">UNLOCK TIME</string>
-    <string name="floating_button_delete_all_content_description">Delete All</string>
-    <string name="list_loading">Loading…</string>
-    <string name="list_error">Error</string>
+    <string name="floating_button_delete_all_content_description">delete all</string>
 </resources>
