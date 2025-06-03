@@ -1,7 +1,7 @@
 package com.smione.thismuch.contract
 
-import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.accesslog.AccessLogRepositoryInterface
+import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 
 interface AccessLogRepositoryContract {
     interface View {

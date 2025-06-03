@@ -1,8 +1,8 @@
 package com.smione.thismuch.service.timenotification.receiver
 
 import com.smione.thismuch.contract.AccessLogRepositoryContract
-import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenLockBroadcastReceiverHandlerInterface.TemporaryAccessLogListElement
+import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 import timber.log.Timber
 
 class TimeNotificationReceiverHelper {

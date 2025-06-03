@@ -2,21 +2,22 @@ package com.smione.thismuch.ui.fragment
 
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.smione.thismuch.contract.AccessLogRepositoryContract
 import com.smione.thismuch.databinding.FragmentAccessListBinding
-import com.smione.thismuch.model.repository.AccessLogRepositoryInterface
+import com.smione.thismuch.model.repository.accesslog.AccessLogRepositoryInterface
 import com.smione.thismuch.presenter.AccessLogRepositoryPresenter
 import com.smione.thismuch.presenter.RuntimeDispatcherProvider
+import com.smione.thismuch.presenter.RuntimeScopeProvider
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
-import com.smione.thismuch.service.TimeNotificationService
+import com.smione.thismuch.service.timenotification.TimeNotificationService
 import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListRecyclerViewAdapter
 import com.smione.thismuch.utils.init.MainActivityUtils
+import timber.log.Timber
 
 class AccessLogListFragment(private val accessLogRepository: AccessLogRepositoryInterface,
                             private val timeNotificationService: TimeNotificationService) :
@@ -43,7 +44,11 @@ class AccessLogListFragment(private val accessLogRepository: AccessLogRepository
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        presenter = AccessLogRepositoryPresenter(RuntimeDispatcherProvider(), accessLogRepository)
+        presenter = AccessLogRepositoryPresenter(
+            RuntimeScopeProvider(),
+            RuntimeDispatcherProvider(),
+            accessLogRepository
+        )
         presenter.bindView(this)
     }
 
@@ -65,6 +70,7 @@ class AccessLogListFragment(private val accessLogRepository: AccessLogRepository
 
         val headers = presenter.getHeaders()
         presenter.getAccessLogList()
+        accessLogRepository.initDatabase(this.context.applicationContext)
         binding.rvList.adapter = AccessLogListRecyclerViewAdapter(headers, emptyList())
 
         binding.fabDeleteAll.setOnClickListener { deleteAll() }
@@ -75,7 +81,7 @@ class AccessLogListFragment(private val accessLogRepository: AccessLogRepository
     }
 
     override fun onScreenUnlock() {
-        Log.v(TAG, "onScreenUnlock")
+        Timber.v("$TAG onScreenUnlock")
         presenter.getAccessLogList()
     }
 

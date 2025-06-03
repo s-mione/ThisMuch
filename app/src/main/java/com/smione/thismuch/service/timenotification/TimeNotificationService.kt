@@ -8,7 +8,6 @@ import android.os.IBinder
 import com.smione.thismuch.contract.AccessLogRepositoryContract
 import com.smione.thismuch.listener.receiver.ScreenLockBroadcastReceiver
 import com.smione.thismuch.listener.receiver.ScreenUnlockBroadcastReceiver
-import com.smione.thismuch.model.element.AccessLogListElement
 import com.smione.thismuch.model.repository.accesslog.RoomAccessLogRepository
 import com.smione.thismuch.model.repository.accesslog.database.RoomAccessLogDatabaseProvider
 import com.smione.thismuch.notification.time.NotificationTimeCreate
@@ -22,6 +21,7 @@ import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScr
 import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenLockBroadcastReceiverHandlerInterface
 import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenUnlockBroadcastReceiverHandler
 import com.smione.thismuch.service.timenotification.receiver.TimeNotificationScreenUnlockBroadcastReceiverHandlerInterface
+import com.smione.thismuch.ui.fragment.recyclerview.AccessLogListElement
 import timber.log.Timber
 import java.time.Instant
 import java.time.ZoneId

@@ -1,11 +1,11 @@
 package com.smione.thismuch.ui.fragment.recyclerview
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.smione.thismuch.databinding.FragmentAccessItemBinding
-import com.smione.thismuch.model.converter.InstantStringConverter
+import com.smione.thismuch.model.converter.InstantDurationStringConverter
+import timber.log.Timber
 
 class AccessLogListRecyclerViewAdapter(
     private val headers: List<String>,
@@ -18,7 +18,7 @@ class AccessLogListRecyclerViewAdapter(
     }
 
     fun updateValues(values: List<AccessLogListElement>, recyclerView: RecyclerView) {
-        Log.v("AccessLogListRecyclerViewAdapter", "updateValues: $values")
+        Timber.v("AccessLogListRecyclerViewAdapter updateValues: $values")
         recyclerView.post {
             val numberOfItemsAdded = values.size - this.values.size
             this.values = values
@@ -27,7 +27,7 @@ class AccessLogListRecyclerViewAdapter(
     }
 
     fun deleteAll(recyclerView: RecyclerView) {
-        Log.v("AccessLogListRecyclerViewAdapter", "delete all")
+        Timber.v("AccessLogListRecyclerViewAdapter delete all")
         recyclerView.post {
             notifyItemRangeRemoved(0, values.size)
             this.values = emptyList()
@@ -81,13 +81,14 @@ class AccessLogListRecyclerViewAdapter(
     inner class ItemViewHolder(private val binding: FragmentAccessItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(position: Int, item: AccessLogListElement) {
+            Timber.v("AccessLogListRecyclerViewAdapter ItemViewHolder bind: $item")
             binding.tvItemNumber.text = (values.size - position + 1).toString()
             binding.tvTimeOn.text =
-                item.timeOn?.let { InstantStringConverter.fromInstantToString(it) }
+                item.timeOn.let { InstantDurationStringConverter.fromInstantToFormattedString(it) }
             binding.tvTimeOff.text =
-                item.timeOff?.let { InstantStringConverter.fromInstantToString(it) }
+                item.timeOff.let { InstantDurationStringConverter.fromInstantToFormattedString(it) }
             binding.tvTotalTime.text =
-                item.totalTime?.let { InstantStringConverter.fromInstantToString(it) }
+                item.totalTime.let { InstantDurationStringConverter.fromDurationToFormattedString(it) }
         }
     }
 }
