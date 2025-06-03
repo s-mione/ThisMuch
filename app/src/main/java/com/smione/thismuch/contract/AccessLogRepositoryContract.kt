@@ -14,7 +14,7 @@ interface AccessLogRepositoryContract {
         fun bindView(view: View)
 
         fun getHeaders(): List<String>
-        fun getAccessLogListIndexedByTimeDesc()
+        fun getAccessLogList()
         fun saveAccessLogElement(element: AccessLogListElement)
         fun deleteAll()
     }

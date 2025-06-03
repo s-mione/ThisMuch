@@ -80,7 +80,7 @@ class AccessLogListViewModel(private val accessLogRepository: AccessLogRepositor
 
         val headers = presenter.getHeaders()
         uiState = uiState.copy(isLoading = true, headers = headers)
-        presenter.getAccessLogListIndexedByTimeDesc()
+        presenter.getAccessLogList()
     }
 
     private fun deleteAll() {
@@ -90,7 +90,7 @@ class AccessLogListViewModel(private val accessLogRepository: AccessLogRepositor
     override fun onScreenUnlock() {
         Timber.v("$TAG onScreenUnlock")
         uiState = uiState.copy(isLoading = true)
-        presenter.getAccessLogListIndexedByTimeDesc()
+        presenter.getAccessLogList()
     }
 
     override fun onGetAccessLogList(accessLogList: List<AccessLogListElement>) {
