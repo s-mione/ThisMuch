@@ -15,6 +15,7 @@ import com.smione.thismuch.service.timenotification.TimeNotificationService
 import com.smione.thismuch.ui.activitycontract.MainActivityContract
 import com.smione.thismuch.ui.fragment.AccessLogListFragment
 import com.smione.thismuch.ui.fragment.MainFragment
+import com.smione.thismuch.ui.fragment.StatisticsFragment
 import timber.log.Timber
 
 
@@ -57,7 +58,12 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
                 R.id.menuAccessLogList -> {
                     if (currentScreen != R.id.menuAccessLogList) replaceFragmentToAccessLogListFragment()
                 }
+
+                R.id.menuStatistics -> {
+                    if (currentScreen != R.id.menuStatistics) replaceFragmentToStatisticsFragment()
+                }
             }
+            currentScreen = it.itemId
             true
         }
     }
@@ -84,6 +90,14 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
         val fragment = MainFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment, fragment, MainFragment.TAG)
+            .commit()
+    }
+
+    override fun replaceFragmentToStatisticsFragment() {
+        Timber.v("MainActivity replaceFragmentToStatisticsFragment")
+        val fragment = StatisticsFragment.newInstance()
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment, fragment, StatisticsFragment.TAG)
             .commit()
     }
 
