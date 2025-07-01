@@ -17,7 +17,6 @@ import com.smione.thismuch.model.repository.statistics.database.RoomStatisticsDa
 import com.smione.thismuch.service.timenotification.TimeNotificationService
 import com.smione.thismuch.ui.activitycontract.MainActivityContract
 import com.smione.thismuch.ui.fragment.AccessLogListFragment
-import com.smione.thismuch.ui.fragment.MainFragment
 import com.smione.thismuch.ui.fragment.StatisticsFragment
 import timber.log.Timber
 
@@ -87,14 +86,6 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
             AccessLogListFragment.newInstance(accessLogRepository, timeNotificationService)
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment, fragment, AccessLogListFragment.TAG)
-            .commit()
-    }
-
-    override fun replaceFragmentToMainFragment() {
-        Timber.v("MainActivity replaceFragmentToMainFragment")
-        val fragment = MainFragment.newInstance()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment, fragment, MainFragment.TAG)
             .commit()
     }
 
