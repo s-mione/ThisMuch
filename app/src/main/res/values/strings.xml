@@ -4,4 +4,5 @@
     <string name="floating_button_delete_all_content_description">delete all</string>
     <string name="bottom_navigation_menu_button_logs">Logs</string>
     <string name="bottom_navigation_menu_button_statistics">Statistics</string>
+    <string name="textview_avg_timeup_label">Average time-up</string>
 </resources>
