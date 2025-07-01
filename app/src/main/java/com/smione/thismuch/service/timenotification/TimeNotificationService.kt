@@ -82,6 +82,7 @@ class TimeNotificationService(val timeNotificationScreenLockBroadcastReceiverHan
         stopForeground(STOP_FOREGROUND_REMOVE)
         stopSelf()
         isRunning = false
+        this.unregisterReceivers()
     }
 
     fun addUnlockReceiverSubscriber(subscriber: ScreenUnlockBroadcastReceiverContract) {
@@ -131,6 +132,11 @@ class TimeNotificationService(val timeNotificationScreenLockBroadcastReceiverHan
 
         screenLockBroadcastReceiver = ScreenLockBroadcastReceiver(this)
         screenLockBroadcastReceiver.register(this)
+    }
+
+    private fun unregisterReceivers() {
+        unregisterReceiver(screenUnlockBroadcastReceiver)
+        unregisterReceiver(screenLockBroadcastReceiver)
     }
 
     private fun startForegroundService() {

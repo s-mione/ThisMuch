@@ -6,14 +6,19 @@ import android.content.ServiceConnection
 import android.os.Bundle
 import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.smione.thismuch.R
 import com.smione.thismuch.model.repository.accesslog.AccessLogRepositoryInterface
 import com.smione.thismuch.model.repository.accesslog.RoomAccessLogRepository
 import com.smione.thismuch.model.repository.accesslog.database.RoomAccessLogDatabaseProvider
+import com.smione.thismuch.model.repository.statistics.RoomStatisticsRepository
+import com.smione.thismuch.model.repository.statistics.StatisticsRepositoryInterface
+import com.smione.thismuch.model.repository.statistics.database.RoomStatisticsDatabaseProvider
 import com.smione.thismuch.service.timenotification.TimeNotificationService
 import com.smione.thismuch.ui.activitycontract.MainActivityContract
 import com.smione.thismuch.ui.fragment.AccessLogListFragment
 import com.smione.thismuch.ui.fragment.MainFragment
+import com.smione.thismuch.ui.fragment.StatisticsFragment
 import timber.log.Timber
 
 
@@ -24,17 +29,21 @@ interface ServiceConnectionCallback {
 class MainActivity : AppCompatActivity(), MainActivityContract {
 
     private lateinit var accessLogRepository: AccessLogRepositoryInterface
+    private lateinit var statisticsRepository: StatisticsRepositoryInterface
 
     private lateinit var timeNotificationService: TimeNotificationService
     private var isBound = false
 
     private var serviceConnectionCallback: ServiceConnectionCallback? = null
 
+    private var currentScreen = R.id.menuAccessLogList
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Timber.plant(Timber.DebugTree())
         Timber.v("MainActivity onCreate")
         super.onCreate(savedInstanceState)
         accessLogRepository = RoomAccessLogRepository(RoomAccessLogDatabaseProvider())
+        statisticsRepository = RoomStatisticsRepository(RoomStatisticsDatabaseProvider())
 
         Intent(this, TimeNotificationService::class.java).also { intent ->
             bindService(intent, connection, BIND_AUTO_CREATE)
@@ -45,6 +54,22 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
             override fun onServiceConnected() {
                 replaceFragmentToAccessLogListFragment()
             }
+        }
+
+        val bottomNavigationView: BottomNavigationView = findViewById(R.id.bottomNavigationView)
+
+        bottomNavigationView.setOnItemSelectedListener {
+            when (it.itemId) {
+                R.id.menuAccessLogList -> {
+                    if (currentScreen != R.id.menuAccessLogList) replaceFragmentToAccessLogListFragment()
+                }
+
+                R.id.menuStatistics -> {
+                    if (currentScreen != R.id.menuStatistics) replaceFragmentToStatisticsFragment()
+                }
+            }
+            currentScreen = it.itemId
+            true
         }
     }
 
@@ -70,6 +95,14 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
         val fragment = MainFragment.newInstance()
         supportFragmentManager.beginTransaction()
             .replace(R.id.fragment, fragment, MainFragment.TAG)
+            .commit()
+    }
+
+    override fun replaceFragmentToStatisticsFragment() {
+        Timber.v("MainActivity replaceFragmentToStatisticsFragment")
+        val fragment = StatisticsFragment.newInstance(statisticsRepository)
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.fragment, fragment, StatisticsFragment.TAG)
             .commit()
     }
 

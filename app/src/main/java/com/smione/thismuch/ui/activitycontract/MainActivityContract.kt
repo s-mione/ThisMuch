@@ -4,4 +4,5 @@ interface MainActivityContract {
 
     fun replaceFragmentToMainFragment()
     fun replaceFragmentToAccessLogListFragment()
+    fun replaceFragmentToStatisticsFragment()
 }
