@@ -1,8 +1,7 @@
 package com.smione.thismuch.model.repository.accesslog
 
 import android.content.Context
-import com.smione.thismuch.model.repository.accesslog.database.AccessLogDatabaseInterface
-import com.smione.thismuch.model.repository.accesslog.database.AccessLogDatabaseProvider
+import com.smione.thismuch.database.AccessLogDatabaseProvider
 import com.smione.thismuch.model.repository.accesslog.database.AccessLogDao
 import com.smione.thismuch.model.repository.accesslog.database.entity.AccessLogEntity
 import timber.log.Timber
@@ -14,7 +13,7 @@ class RoomAccessLogRepository(val databaseProvider: AccessLogDatabaseProvider) :
 
     override fun initDatabase(applicationContext: Context) {
         Timber.v("RoomAccessLogRepository initDatabase")
-        this.database = this.databaseProvider.main(applicationContext)
+        this.database = this.databaseProvider.main(applicationContext).roomAccessLogDao()
     }
 
     override fun getHeaders(): List<String> {

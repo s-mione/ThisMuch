@@ -6,10 +6,10 @@ import android.content.Intent
 import android.os.Binder
 import android.os.IBinder
 import com.smione.thismuch.contract.AccessLogRepositoryContract
+import com.smione.thismuch.database.RoomAccessLogDatabaseProvider
 import com.smione.thismuch.listener.receiver.ScreenLockBroadcastReceiver
 import com.smione.thismuch.listener.receiver.ScreenUnlockBroadcastReceiver
 import com.smione.thismuch.model.repository.accesslog.RoomAccessLogRepository
-import com.smione.thismuch.model.repository.accesslog.database.RoomAccessLogDatabaseProvider
 import com.smione.thismuch.notification.time.NotificationTimeCreate
 import com.smione.thismuch.notification.time.NotificationTimeShow
 import com.smione.thismuch.presenter.AccessLogRepositoryPresenter

@@ -1,4 +1,4 @@
-package com.smione.thismuch.model.repository.accesslog.database
+package com.smione.thismuch.database
 
 import android.content.Context
 import androidx.room.Room
@@ -6,14 +6,14 @@ import androidx.room.Room
 interface AccessLogDatabaseProvider {
     companion object {
         @Volatile
-        internal var dbSingleton: AccessLogDatabaseInterface? = null
+        internal var dbSingleton: RoomAccessLogDatabase? = null
     }
 
-    fun main(applicationContext: Context): AccessLogDatabaseInterface
+    fun main(applicationContext: Context): RoomAccessLogDatabase
 }
 
 class RoomAccessLogDatabaseProvider() : AccessLogDatabaseProvider {
-    override fun main(applicationContext: Context): AccessLogDatabaseInterface {
+    override fun main(applicationContext: Context): RoomAccessLogDatabase {
         return AccessLogDatabaseProvider.dbSingleton ?: synchronized(this) {
             val instance = Room.databaseBuilder(
                 applicationContext,
@@ -22,8 +22,7 @@ class RoomAccessLogDatabaseProvider() : AccessLogDatabaseProvider {
             )
                 .fallbackToDestructiveMigration()
                 .build()
-            AccessLogDatabaseProvider.dbSingleton = instance.roomAccessLogDao()
-            instance.roomAccessLogDao()
+            instance
         }
     }
 }

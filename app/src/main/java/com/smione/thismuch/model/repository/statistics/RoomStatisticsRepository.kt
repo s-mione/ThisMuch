@@ -1,20 +1,20 @@
 package com.smione.thismuch.model.repository.statistics
 
 import android.content.Context
+import com.smione.thismuch.database.AccessLogDatabaseProvider
 import com.smione.thismuch.model.converter.InstantDurationStringConverter
 import com.smione.thismuch.model.repository.statistics.database.StatisticsDao
 import timber.log.Timber
 import java.time.Duration
-import java.time.temporal.ChronoUnit
 
-class RoomStatisticsRepository(val databaseProvider: StatisticsDatabaseProvider) :
+class RoomStatisticsRepository(val databaseProvider: AccessLogDatabaseProvider) :
     StatisticsRepositoryInterface {
 
-    private var database: StatisticsDatabaseInterface? = null
+    private var database: StatisticsDao? = null
 
     override fun initDatabase(applicationContext: Context) {
         Timber.v("RoomAccessLogRepository initDatabase")
-        this.database = this.databaseProvider.main(applicationContext)
+        this.database = this.databaseProvider.main(applicationContext).roomStatisticDao()
     }
 
     override fun getAvgTimeUp(): Duration {
