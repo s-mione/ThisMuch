@@ -18,29 +18,22 @@ class RoomStatisticsRepository(val databaseProvider: AccessLogDatabaseProvider) 
     }
 
     override fun getAvgTimeUp(): Duration {
-        val allTotalTime = database?.getAllTotalTime()
-        val allTotalTimeAsDuration = allTotalTime?.map {
+
+        val allTotalTime = database?.getAllTotalTime()?.map {
             InstantDurationStringConverter.fromStringToDuration(it)
         }
-        val totalHours =
-            allTotalTimeAsDuration?.sumOf { a -> a.get(ChronoUnit.HOURS) } ?: 0L
-        val totalMinuts =
-            allTotalTimeAsDuration?.sumOf { a -> a.get(ChronoUnit.MINUTES) } ?: 0L
-        val totalSeconds =
-            allTotalTimeAsDuration?.sumOf { a -> a.get(ChronoUnit.SECONDS) } ?: 0L
-        val avgHours = totalHours /
-                (allTotalTimeAsDuration?.size ?: 1).toLong()
-        val avgMinuts = totalMinuts /
-                (allTotalTimeAsDuration?.size ?: 1).toLong()
-        val avgSeconds = totalSeconds /
-                (allTotalTimeAsDuration?.size ?: 1).toLong()
-        val avgDuration = Duration.ofHours(avgHours).plusMinutes(avgMinuts).plusSeconds(avgSeconds)
 
-        return avgDuration
-            ?: run {
-                logDatabaseIsNotInitialized()
-                return Duration.ZERO
-            }
+        if (allTotalTime == null) {
+            logDatabaseIsNotInitialized()
+            return Duration.ZERO
+        }
+        if (allTotalTime.isEmpty() == true) {
+            return Duration.ZERO
+        }
+
+        val allTotalTimeAccumulator = allTotalTime.reduce { acc, duration -> acc.plus(duration) }
+
+        return allTotalTimeAccumulator.dividedBy(allTotalTime.size.toLong())
     }
 
     private fun logDatabaseIsNotInitialized() {

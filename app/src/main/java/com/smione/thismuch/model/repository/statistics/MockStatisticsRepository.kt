@@ -82,10 +82,7 @@ class MockStatisticsRepository() : StatisticsRepositoryInterface {
             acc.totalTime = Duration.parse(acc.totalTime).plus(Duration.parse(totalTime)).toString()
             acc
         }
-        val avgHour = Duration.parse(totalAcc.totalTime).toHours() / accessList.size
-        val avgMin =
-            (Duration.parse(totalAcc.totalTime).toMinutes() - (Duration.parse(totalAcc.totalTime)
-                .toHours() * 60)) / accessList.size
-        return Duration.ofHours(avgHour).plusMinutes(avgMin)
+        
+        return Duration.parse(totalAcc.totalTime).dividedBy(accessList.size.toLong())
     }
 }
