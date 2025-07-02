@@ -8,12 +8,11 @@ import android.os.IBinder
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.smione.thismuch.R
+import com.smione.thismuch.database.RoomAccessLogDatabaseProvider
 import com.smione.thismuch.model.repository.accesslog.AccessLogRepositoryInterface
 import com.smione.thismuch.model.repository.accesslog.RoomAccessLogRepository
-import com.smione.thismuch.model.repository.accesslog.database.RoomAccessLogDatabaseProvider
 import com.smione.thismuch.model.repository.statistics.RoomStatisticsRepository
 import com.smione.thismuch.model.repository.statistics.StatisticsRepositoryInterface
-import com.smione.thismuch.model.repository.statistics.database.RoomStatisticsDatabaseProvider
 import com.smione.thismuch.service.timenotification.TimeNotificationService
 import com.smione.thismuch.ui.activitycontract.MainActivityContract
 import com.smione.thismuch.ui.fragment.AccessLogListFragment
@@ -42,7 +41,7 @@ class MainActivity : AppCompatActivity(), MainActivityContract {
         Timber.v("MainActivity onCreate")
         super.onCreate(savedInstanceState)
         accessLogRepository = RoomAccessLogRepository(RoomAccessLogDatabaseProvider())
-        statisticsRepository = RoomStatisticsRepository(RoomStatisticsDatabaseProvider())
+        statisticsRepository = RoomStatisticsRepository(RoomAccessLogDatabaseProvider())
 
         Intent(this, TimeNotificationService::class.java).also { intent ->
             bindService(intent, connection, BIND_AUTO_CREATE)

@@ -5,10 +5,10 @@ import android.database.sqlite.SQLiteConstraintException
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.smione.thismuch.database.AccessLogDatabaseProvider
+import com.smione.thismuch.database.RoomAccessLogDatabase
 import com.smione.thismuch.model.converter.InstantDurationStringConverter
 import com.smione.thismuch.model.repository.accesslog.RoomAccessLogRepository
-import com.smione.thismuch.model.repository.accesslog.database.AccessLogDatabaseProvider
-import com.smione.thismuch.model.repository.accesslog.database.RoomAccessLogDatabase
 import com.smione.thismuch.model.repository.accesslog.database.entity.AccessLogEntity
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -34,7 +34,7 @@ class RoomAccessLogRepositoryTest {
         override fun main(applicationContext: Context) = Room.inMemoryDatabaseBuilder(
             applicationContext,
             RoomAccessLogDatabase::class.java
-        ).allowMainThreadQueries().build().roomAccessLogDao()
+        ).allowMainThreadQueries().build()
     }
 
     companion object {
