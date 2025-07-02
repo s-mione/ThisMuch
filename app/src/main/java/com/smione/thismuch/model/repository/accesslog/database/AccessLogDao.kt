@@ -7,7 +7,7 @@ import androidx.room.Query
 import com.smione.thismuch.model.repository.accesslog.database.entity.AccessLogEntity
 
 @Dao
-interface AccessLogDatabaseInterface {
+interface AccessLogDao {
 
     @Query("SELECT * FROM AccessLogEntity")
     fun getAll(): List<AccessLogEntity>

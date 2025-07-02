@@ -2,8 +2,7 @@ package com.smione.thismuch.model.repository.statistics
 
 import android.content.Context
 import com.smione.thismuch.model.converter.InstantDurationStringConverter
-import com.smione.thismuch.model.repository.statistics.database.StatisticsDatabaseInterface
-import com.smione.thismuch.model.repository.statistics.database.StatisticsDatabaseProvider
+import com.smione.thismuch.model.repository.statistics.database.StatisticsDao
 import timber.log.Timber
 import java.time.Duration
 import java.time.temporal.ChronoUnit
