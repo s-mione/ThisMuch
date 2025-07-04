@@ -1,5 +1,24 @@
-<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <style name="Theme.ThisMuch" parent="Theme.Material3.DayNight.NoActionBar" />
+    <style name="Theme.ThisMuch" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Primary brand color -->
+        <item name="colorPrimary">#A5B4FC</item>
+        <item name="colorOnPrimary">#3F3D56</item>
+
+        <!-- Secondary color -->
+        <item name="colorSecondary">#7CD9B9</item>
+        <item name="colorOnSecondary">#3A4760</item>
+
+        <!-- Background & surfaces -->
+        <item name="android:colorBackground">#B2E3DC</item>
+        <item name="colorSurface">#FFF4E2</item>
+        <item name="colorOnSurface">#2D3A4F</item>
+
+        <!-- Error -->
+        <item name="colorError">#EF9A9A</item>
+
+        <!-- Status bar and navigation bar -->
+        <item name="android:statusBarColor">?attr/colorPrimary</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+    </style>
 </resources>

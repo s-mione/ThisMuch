@@ -1,0 +1,13 @@
+<resources>
+
+    <style name="Theme.ThisMuch" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimary">#6D83DF</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#59BFA1</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="android:colorBackground">#1E2C36</item>
+        <item name="colorSurface">#2D3A4F</item>
+        <item name="colorOnSurface">#FFFFFF</item>
+        <item name="colorError">#FFB4A9</item>
+    </style>
+</resources>
