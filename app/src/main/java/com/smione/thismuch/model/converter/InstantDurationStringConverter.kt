@@ -9,7 +9,7 @@ class InstantDurationStringConverter {
 
     companion object {
         private val formatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(ZoneId.of("UTC"))
+            DateTimeFormatter.ofPattern("HH:mm yyyy-MM-dd").withZone(ZoneId.of("UTC"))
 
         fun fromInstantToString(instant: Instant): String =
             instant.toString()
