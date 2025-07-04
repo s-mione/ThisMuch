@@ -62,6 +62,7 @@ class AccessLogListFragment(private val accessLogRepository: AccessLogRepository
         super.onViewCreated(view, savedInstanceState)
 
         MainActivityUtils.askToIgnoreBatteryOptimization(requireContext())
+        MainActivityUtils.askForNotificationPermission(requireContext())
         MainActivityUtils.startTimeNotificationServiceIfNotRunning(
             context,
             timeNotificationService,

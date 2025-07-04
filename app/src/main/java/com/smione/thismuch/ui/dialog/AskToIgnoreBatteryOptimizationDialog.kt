@@ -3,11 +3,11 @@ package com.smione.thismuch.ui.dialog
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
+import androidx.core.net.toUri
 import java.util.Locale
 
 class AskToIgnoreBatteryOptimizationDialog(private val context: Context) {
@@ -82,13 +82,13 @@ class AskToIgnoreBatteryOptimizationDialog(private val context: Context) {
 
     private fun getSamsungIntent(): Intent {
         return Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            data = Uri.parse("package:${context.packageName}")
+            data = "package:${context.packageName}".toUri()
         }
     }
 
     private fun getDefaultIntent(): Intent {
         return Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            data = Uri.parse("package:${context.packageName}")
+            data = "package:${context.packageName}".toUri()
         }
     }
 
