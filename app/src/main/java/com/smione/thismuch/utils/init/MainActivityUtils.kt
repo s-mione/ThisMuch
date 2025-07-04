@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import com.smione.thismuch.receivercontract.ScreenUnlockBroadcastReceiverContract
 import com.smione.thismuch.service.timenotification.TimeNotificationService
+import com.smione.thismuch.ui.dialog.AskForNotificationPermission
 import com.smione.thismuch.ui.dialog.AskToIgnoreBatteryOptimizationDialog
 import timber.log.Timber
 
@@ -14,6 +15,12 @@ class MainActivityUtils {
             Timber.v("MainActivityUtils askToIgnoreBatteryOptimization")
             AskToIgnoreBatteryOptimizationDialog(context).show()
         }
+
+        fun askForNotificationPermission(context: Context) {
+            Timber.v("MainActivityUtils askForNotificationPermission")
+            AskForNotificationPermission(context).show()
+        }
+
 
         fun startTimeNotificationServiceIfNotRunning(context: Context,
                                                      timeNotificationService: TimeNotificationService? = null,

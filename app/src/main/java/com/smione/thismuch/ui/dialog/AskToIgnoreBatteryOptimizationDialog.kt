@@ -3,17 +3,17 @@ package com.smione.thismuch.ui.dialog
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Build
 import android.os.PowerManager
 import android.provider.Settings
 import androidx.appcompat.app.AlertDialog
+import androidx.core.net.toUri
 import java.util.Locale
 
 class AskToIgnoreBatteryOptimizationDialog(private val context: Context) {
 
     fun show() {
-        if (isIgnoringBatteryOptimizations(context)) {
+        if (shouldAskToIgnoreBatteryOptimization()) {
             val manufacturer = Build.MANUFACTURER.lowercase(Locale.getDefault())
 
             val intent = when {
@@ -32,6 +32,14 @@ class AskToIgnoreBatteryOptimizationDialog(private val context: Context) {
                     intent.let { context.startActivity(it) }
                 }
                 .setNegativeButton("Annulla", null)
+                .setNeutralButton("Non mostrare più") { _, _ ->
+                    val sharedPreferences =
+                        context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+                    with(sharedPreferences.edit()) {
+                        putBoolean("ignore_battery_optimization_dialog_shown", true)
+                        apply()
+                    }
+                }
                 .show()
         }
     }
@@ -74,14 +82,22 @@ class AskToIgnoreBatteryOptimizationDialog(private val context: Context) {
 
     private fun getSamsungIntent(): Intent {
         return Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            data = Uri.parse("package:${context.packageName}")
+            data = "package:${context.packageName}".toUri()
         }
     }
 
     private fun getDefaultIntent(): Intent {
         return Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
-            data = Uri.parse("package:${context.packageName}")
+            data = "package:${context.packageName}".toUri()
         }
+    }
+
+    private fun shouldAskToIgnoreBatteryOptimization(): Boolean {
+        val sharedPreferences =
+            context.getSharedPreferences("app_preferences", Context.MODE_PRIVATE)
+        val ignoreDialog =
+            sharedPreferences.getBoolean("ignore_battery_optimization_dialog_shown", false)
+        return !ignoreDialog && !isIgnoringBatteryOptimizations(context)
     }
 
     private fun isIgnoringBatteryOptimizations(context: Context): Boolean {
